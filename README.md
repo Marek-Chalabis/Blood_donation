@@ -37,7 +37,7 @@ All registered donors can be found on admin page( Info › Patients)(https://blo
 ## Technologies
 * Python - version 3.8.1
 * Django - version 3.05
-* bootrap - version 4.4.1
+* bootstrap - version 4.4.1
 * jquery - version 3.4.1
 * HTML5/CSS
 
