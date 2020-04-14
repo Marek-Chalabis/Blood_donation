@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block left %}
+
+<script type="text/javascript">
+window.onload = function () {
+	var chart_reserve = new CanvasJS.Chart("chart_reserve", {
+	    theme: "light2",
+	    animationEnabled: true,
+		title:{
+			text: "State of blood reserve in {{ branch }}"
+		},
+		axisY:{
+            interval: 10,
+            maximum: 100,
+            suffix: "%",
+        },
+		data: [
+		{
+			type: "bar",
+			toolTipContent: "<b>{label}</b>: {y}%",
+			dataPoints: [
+			{% for key, value in bloods.items %}
+				{ label: "{{ key }}",  y: {{ value }}, color:
+				    {% if value >= 70 %}
+				        "#01FF70"
+				    {% elif value < 70 and value >= 30 %}
+				        "#FF851B"
+				    {% elif value < 30 %}
+				        "#FF4136"
+				    {% endif %}
+				    },
+			{% endfor %}
+			]
+		}
+		]
+	});
+
+var blood_percent = new CanvasJS.Chart("blood_percent", {
+	theme: "light2",
+	animationEnabled: true,
+	title: {
+		text: "Blood share in the bank of {{ branch }}"
+	},
+	data: [{
+		type: "pie",
+		startAngle: 25,
+		toolTipContent: "<b>{label}</b>: {y}%",
+		indexLabelFontSize: 16,
+		indexLabel: "{label} - {y}%",
+		dataPoints: [
+			{% for key, value in blood_all.items %}
+				{ label: "{{ key }}",  y: {{ value }} },
+			{% endfor %}
+		]
+	}]
+});
+blood_percent.render();
+chart_reserve.render();
+}
+</script>
+<h2 class="text-center" style="padding-top: 0.5em;">Information about blood status in <b>{{ branch }}</b></h2>
+    <div class="container text-center" style="padding-top: 0.5em;">
+        <div class="row">
+            <div class="col">
+                <div id="chart_reserve" style="height: 300px; width: 100%;"></div>
+            </div>
+            <div class="col">
+                <div id="blood_percent" style="height: 300px; width: 100%;"></div>
+
+            </div>
+        </div>
+    </div>
+<h2 class="text-center" style="padding-top: 0.5em;">See more information for specific branch</h2>
+<div style="width:100%;text-align: center;" class="mb-3">
+    <a href="{% url 'info-branch' 'Warszawa' %}" class="btn btn-info btn-lg active ml-2 mr-2" role="button" aria-pressed="true">Warszawa</a>
+    <a href="{% url 'info-branch' 'Lublin' %}" class="btn btn-info btn-lg active ml-2 mr-2" role="button" aria-pressed="true">Lublin</a>
+    <a href="{% url 'info-branch' 'Radom' %}" class="btn btn-info btn-lg active ml-2 mr-2" role="button" aria-pressed="true">Radom</a>
+    <a href="{% url 'info-branch' 'Gdynia' %}" class="btn btn-info btn-lg active ml-2 mr-2" role="button" aria-pressed="true">Gdynia</a>
+    <a href="{% url 'info-branch' 'Kraków' %}" class="btn btn-info btn-lg active ml-2 mr-2" role="button" aria-pressed="true">Kraków</a>
+</div>
+{% endblock %}
+
+{% block right %}
+<h3 class="text-center">Medical Staff</h3>
+    <div class="border" style="height: 450px; overflow:auto; background-color:white;">
+        {% for s in staff %}
+            <div class="border-bottom border-secondary mt-1 mb-1" style="height:102px;">
+                    <img class="rounded-circle ml-1" style="float:left; margin-right:10px; width:100px; height:100px; border:none;" src="{{ s.profile.image.url }}">
+                    <i>{{ s.profile.position }}</i>
+                    <br><b>{{ s.first_name }} {{ s.last_name }}</b>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

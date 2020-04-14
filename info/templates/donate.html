@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block left %}
+    <div class="container text-center" style="padding-top: 0.5em;">
+            <div class="row">
+                <div class="col" style="padding-top: 7px;">
+                    <a href="{% url 'patient-create' %}" class="btn btn-primary btn-lg active" role="button" aria-disabled="true">Register Donor</a>
+                </div>
+                <div class="col">
+                    <form method="POST">
+                    {% csrf_token %}
+                      <input type="number" name="pesel" placeholder="Input donor PESEL">
+                        <button type="submit" class="btn btn-primary mt-2 mb-2 btn-lg active">Donate</button>
+                  </form>
+                </div>
+            </div>
+	</div>
+{% endblock %}
+
+{% block right %}
+    There are <b>{{ donors }}</b> registered donors
+{% endblock %}

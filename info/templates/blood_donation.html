@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block left %}
+    <div class="container">
+            <div class="row">
+                <div class="col-6" style="background-color: white;">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <fieldset class="form-group">
+                            <legend class="border-bottom mb-4">Donor: <b>{{ patient.first_name }} {{ patient.last_name }}</b></legend>
+                            {{ form|crispy }}
+                        </fieldset>
+                        <div class="form-group">
+                            <button class="btn btn-success mr-2" type="submit">Register Donate</button>
+                            <button class="btn btn-danger" type="reset">Reset</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-6" style="background-color: white;">
+                    <h3 class="text-center">Donor history</h3>
+                        <div class="border" style="height: 410px;overflow:auto;">
+                            {% for h in history %}
+                                <div class="border-bottom border-secondary m-1">
+                                Medical worker: <i>{{ h.medical_staff.first_name }} {{ h.medical_staff.last_name }} - {{ h.medical_staff.profile.position }}</i>
+                                <br>Date: <i>{{ h.date_of_donation|date:"Y-m-d" }}</i>
+                                <br>Blood donation:
+                                {% if h.accept_donate == True %}
+                                    <b class="text-success">allowed</b>
+                                {% else %}
+                                    <b class="text-danger">banned</b>
+                                    <br>Information: {{ h.refuse_information }}
+                                {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                 </div>
+            </div>
+	</div>
+{% endblock %}
+
