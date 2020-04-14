@@ -22,13 +22,17 @@ Login as admin:
 * password - admin
 
 Check donor status without login as employee(random examples)
-* PESEL - First_name - Last_name      TUTAJ DODAĆ W WERSJI FINALNEJ
-* PESEL - First_name - Last_name
+* PESEL: 73092079322, First_name: Ramona, Last_name: Sikorska
+* PESE: 49090934752, First_name: Dorian, Last_name: Kaczmarczyk
 
-All registered donors can be found on admin page(https://blood-dontaion.herokuapp.com/admin/)
+All registered donors can be found on admin page( Info › Patients)(https://blood-dontaion.herokuapp.com/admin/)
 
 ## Screenshots
-![Example screenshot](./img/screenshot.png) Tutaj dodam jak poprawie kolory !!!!!!!!!!
+![list_donor](./img/list_donor.PNG)
+![branch](./img/branch.PNG)
+![donor_info](./img/donor_info.PNG)
+![filtry](./img/filtry.PNG)
+![info_donor](./img/info_donor.PNG)
 
 ## Technologies
 * Python - version 3.8.1
