@@ -47,6 +47,7 @@ All registered donors can be found on admin page( Info › Patients)(https://blo
 
 ## Features
 List of features:
+* optimized queries
 * information about the blood base and employees divided into individual departments
 * authorization system(login, logout, register, reset password, update) with secret key to prevent unauthorized people to login
 * every registered donor can check if they can donate blood
