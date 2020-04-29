@@ -75,11 +75,11 @@ chart_reserve.render();
     </div>
 <h2 class="text-center" style="padding-top: 0.5em;">See more information for specific branch</h2>
 <div style="width:100%;text-align: center;" class="mb-3">
-    <a href="{% url 'info-branch' 'Warszawa' %}" class="btn btn-info btn-lg active ml-2 mr-2" role="button" aria-pressed="true">Warszawa</a>
-    <a href="{% url 'info-branch' 'Lublin' %}" class="btn btn-info btn-lg active ml-2 mr-2" role="button" aria-pressed="true">Lublin</a>
-    <a href="{% url 'info-branch' 'Radom' %}" class="btn btn-info btn-lg active ml-2 mr-2" role="button" aria-pressed="true">Radom</a>
-    <a href="{% url 'info-branch' 'Gdynia' %}" class="btn btn-info btn-lg active ml-2 mr-2" role="button" aria-pressed="true">Gdynia</a>
-    <a href="{% url 'info-branch' 'Kraków' %}" class="btn btn-info btn-lg active ml-2 mr-2" role="button" aria-pressed="true">Kraków</a>
+
+    {% for city in cities %}
+        <a href="{% url 'info-branch' city %}" class="btn btn-info btn-lg active ml-2 mr-2" role="button" aria-pressed="true">{{ city }}</a>
+    {% endfor %}
+
 </div>
 {% endblock %}
 

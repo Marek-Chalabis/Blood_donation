@@ -8,69 +8,73 @@ from .filters import PatientFilter
 from .models import Patient, Donation
 from django.contrib.auth.models import User
 from .forms import PatientForm, DonationForm, InfoForDonor, UpdatePatientForm
-
+from django.db.models import Count, Q
+from users.models import Profile
 
 # =========================== VIEWS FOR EVERYONE ============================
+
+
 def info_main(request):
-    blood_all = {}
+    available_cities = User.objects.values_list('profile__branch', flat=True).distinct()
     current_blood_status = Donation.objects.filter(accept_donate=True).count()
-    current_blood_status_for_blood = Donation.objects.count() / 8
-    for blood in Patient.objects.values('blood_group'):
-        """
-        counts all donated blood for specific type
-        """
-        blood_all[blood['blood_group']] = Donation.objects.filter(patient__blood_group=blood['blood_group'],
-                                                                  accept_donate=True).count()
-    # sorts from highest to lowest
-    blood_all = {k: v for k, v in sorted(blood_all.items(), key=lambda item: item[1])}
+    current_blood_status_for_blood = current_blood_status / 8
+    blood = Patient.objects.values_list('blood_group').filter(donation__accept_donate=True)\
+        .annotate(total=Count('donation')).order_by('total')
+
     context = {
-        'blood_all': {k: round((v * 100) / current_blood_status, 2) for k, v in blood_all.items()},
-        'bloods': {k: round((v * 100) / current_blood_status_for_blood, 2) for k, v in blood_all.items()},
+        # just to add some logic into view
+        'blood_all': {blood_tuple[0]: round((blood_tuple[1] * 100) / current_blood_status, 2) for blood_tuple in blood},
+        'bloods':  {blood_tuple[0]: round((blood_tuple[1] * 100) / current_blood_status_for_blood, 2)
+                    for blood_tuple in blood},
+        'cities': available_cities
     }
     return render(request, 'main_info.html', context)
 
 
 def info_branch(request, branch):
-    blood_all = {}
-    current_blood_status = Donation.objects.filter(accept_donate=True, medical_staff__profile__branch=branch,
-                                                   medical_staff__is_staff=False).count()
-    current_blood_status_for_blood = Donation.objects.filter(medical_staff__profile__branch=branch,
-                                                             medical_staff__is_staff=False).count() / 8
-    for blood in Patient.objects.values('blood_group'):
-        blood_all[blood['blood_group']] = Donation.objects.filter(patient__blood_group=blood['blood_group'],
-                                                                  accept_donate=True,
-                                                                  medical_staff__profile__branch=branch,
-                                                                  medical_staff__is_staff=False
-                                                                  ).count()
-    blood_all = {k: v for k, v in sorted(blood_all.items(), key=lambda item: item[1])}
+    # remove actual branch from cities
+    available_cities = list(User.objects.values_list('profile__branch', flat=True).distinct())
+    available_cities.remove(branch)
+
+    current_blood_status = Donation.objects.filter(
+        accept_donate=True, medical_staff__profile__branch=branch, medical_staff__is_staff=False).count()
+
+    current_blood_status_for_blood = current_blood_status / 8
+
+    blood = Patient.objects.values_list('blood_group').filter(
+        donation__accept_donate=True, medical_staff__profile__branch=branch, medical_staff__is_staff=False)\
+        .annotate(total=Count('donation')).order_by('total')
+
+    staff = Profile.objects.filter(branch=branch, user__is_staff=False).select_related('user').all()
     context = {
-        'blood_all': {k: round((v * 100) / current_blood_status, 2) for k, v in blood_all.items()},
-        'bloods': {k: round((v * 100) / current_blood_status_for_blood, 2) for k, v in blood_all.items()},
-        'branch': branch,
-        'staff': User.objects.filter(profile__branch=branch, is_staff=False).all()
+        # just to add some logic into view
+        'blood_all': {blood_tuple[0]: round((blood_tuple[1] * 100) / current_blood_status, 2) for blood_tuple in blood},
+        'bloods': {blood_tuple[0]: round((blood_tuple[1] * 100) / current_blood_status_for_blood, 2) for blood_tuple in
+                   blood},
+        'cities': available_cities,
+        'staff': staff
     }
     return render(request, 'branch_info.html', context)
 
 
 def info_donor(request):
-    context = {
-        'percentage_admitted': round(
-            (Donation.objects.filter(accept_donate=True).count() / Donation.objects.count()) * 100, 2),
-    }
+    context = {}
     if request.method == 'POST':
         form = InfoForDonor(request.POST)
         if form.is_valid():
             pesel = form.cleaned_data['pesel']
-            if Patient.objects.filter(pesel=pesel).exists():
-                donor = Patient.objects.get(pesel=pesel)
+            donor = Patient.objects.filter(pesel=pesel)
+            # checks if donor was in db
+            if donor.exists():
                 last_name = form.cleaned_data['last_name']
                 first_name = form.cleaned_data['first_name']
-                if first_name != donor.first_name:
-                    messages.warning(request, f'{first_name} is not valid for-{pesel}')
-                elif last_name != donor.last_name:
-                    messages.warning(request, f'{last_name} is not valid for-{pesel}')
+                # checks if data is correct
+                if first_name != donor[0].first_name:
+                    messages.warning(request, f'Fist name({first_name}) is not valid for-{pesel}')
+                elif last_name != donor[0].last_name:
+                    messages.warning(request, f'Last name({last_name}) is not valid for-{pesel}')
                 else:
-                    context['donor'] = donor
+                    context['donor'] = donor[0]
                     context['form'] = form
                     return render(request, 'donor_info.html', context)
             else:
@@ -82,34 +86,36 @@ def info_donor(request):
 
 
 # =================== REQUIRE LOGIN =============
+
 @login_required
 def donate(request):
     if request.method == "POST":
         pesel = request.POST.get("pesel")
-        if Patient.objects.filter(pesel=pesel).exists():
-            donor = Patient.objects.get(pesel=pesel)
-            return redirect('blood-donation', donor_id=donor.id)
+        donor = Patient.objects.filter(pesel=pesel)
+        # checks if donor was in db
+        if donor.exists():
+            return redirect('blood-donation', donor_id=donor[0].id)
         else:
             messages.warning(request, f'{pesel} - Does Not exists in database, register him/her')
-    return render(request, 'donate.html', {'donors': Patient.objects.count()})
+    return render(request, 'donate.html')
 
 
 @login_required
 def blood_donation(request, donor_id):
-    patient = Patient.objects.get(id=donor_id)
+    donor = Patient.objects.get(id=donor_id)
+
     if request.method == 'POST':
         form = DonationForm(request.POST)
         if form.is_valid():
             form.instance.medical_staff = request.user
-            form.instance.patient = Patient.objects.get(id=donor_id)
+            form.instance.patient = donor
             form.save()
             return redirect('donate')
     else:
         form = DonationForm()
     context = {
         'form': form,
-        'patient': patient,
-        'history': Donation.objects.filter(patient=patient).order_by('-date_of_donation').all()
+        'donor': donor,
     }
     return render(request, 'blood_donation.html', context)
 

@@ -40,13 +40,7 @@
                         <th>Can you donate blood</th>
                       </tr>
                         <tr>
-                        <th>
-                            {% if donor.can_donate == 'Yes' %}
-                                <div class="text-success">{{ donor.can_donate }}</div>
-                            {% else %}
-                                <div class="text-danger">{{ donor.can_donate }}</div>
-                            {% endif %}
-                        </th>
+                        <th>{{ donor.can_donate }}</th>
                       </tr>
                     </table>
                  </div>
@@ -54,14 +48,3 @@
 	</div>
 
 {% endblock %}
-{% block right %}
-    <b>{{ percentage_admitted }}%</b> donations are acceptable
-{% endblock %}
-                    <ul style="font-size: 150%; list-style-type: none; padding:20px;">
-                        <li class="mb-4">: </li>
-                        <li class="mb-4">: </li>
-                        <li class="mb-4">: </li>
-                        <li class="mb-4">:
-
-                        </li>
-                    </ul>

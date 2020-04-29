@@ -8,7 +8,7 @@
                     <form method="POST">
                         {% csrf_token %}
                         <fieldset class="form-group">
-                            <legend class="border-bottom mb-4">Donor: <b>{{ patient.first_name }} {{ patient.last_name }}</b></legend>
+                            <legend class="border-bottom mb-4">Donor: <b>{{ donor.first_name }} {{ donor.last_name }}</b></legend>
                             {{ form|crispy }}
                         </fieldset>
                         <div class="form-group">
@@ -20,18 +20,8 @@
                 <div class="col-6" style="background-color: white;">
                     <h3 class="text-center">Donor history</h3>
                         <div class="border" style="height: 410px;overflow:auto;">
-                            {% for h in history %}
-                                <div class="border-bottom border-secondary m-1">
-                                Medical worker: <i>{{ h.medical_staff.first_name }} {{ h.medical_staff.last_name }} - {{ h.medical_staff.profile.position }}</i>
-                                <br>Date: <i>{{ h.date_of_donation|date:"Y-m-d" }}</i>
-                                <br>Blood donation:
-                                {% if h.accept_donate == True %}
-                                    <b class="text-success">allowed</b>
-                                {% else %}
-                                    <b class="text-danger">banned</b>
-                                    <br>Information: {{ h.refuse_information }}
-                                {% endif %}
-                                </div>
+                            {% for donation in donor.history_of_donation %}
+                                {% include 'donation_history.html' %}
                             {% endfor %}
                         </div>
                  </div>

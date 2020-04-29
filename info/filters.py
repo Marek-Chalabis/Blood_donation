@@ -1,6 +1,7 @@
 import django_filters
 from .models import Patient, Donation
 import datetime
+from django.db.models import Q
 
 
 class PatientFilter(django_filters.FilterSet):
@@ -17,16 +18,16 @@ class PatientFilter(django_filters.FilterSet):
         """
         Returns donors that last donate was more then 90 days ago
         """
-        today = datetime.datetime.today()
-        today = datetime.date(today.year, today.month, today.day)
-        accept_date = today - datetime.timedelta(days=90)
-        able_to_donate = []
-        for q in queryset:
-            if Donation.objects.filter(patient=q).exists():
-                if q.donation_set.last().date_of_donation < accept_date:
-                    able_to_donate.append(q.id)
+        # list of id patients  who donated under 90 days from today AND donation was accepted
+        not_able_donation_id = Donation.objects.filter(
+            Q(date_of_donation__gte=datetime.datetime.now() - datetime.timedelta(days=90)) &
+            Q(accept_donate=True)) \
+            .all().values_list('patient__id', flat=True)
+        from django.db import connection
+        print(connection.queries)
+        print(len(connection.queries))
+
         if value == 'Yes':
-            return queryset.filter(id__in=able_to_donate)
+            return queryset.exclude(id__in=not_able_donation_id)
         elif value == 'No':
-            not_able_to_donate = set(list(q.id for q in queryset)).difference(able_to_donate)
-            return queryset.filter(id__in=not_able_to_donate)
+            return queryset.filter(id__in=not_able_donation_id)

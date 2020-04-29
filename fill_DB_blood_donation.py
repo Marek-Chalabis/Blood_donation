@@ -106,7 +106,7 @@ def folder_for_data():
 def users_json(path_folder):
     """Create json file for users and saves"""
     json_info = []
-    list_username = []
+    list_username = ['admin']
     for i in range(NUMBER_OF_USERS):
         username = Random_generator.Basic.words(1)
         while username in list_username:

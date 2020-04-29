@@ -3,7 +3,6 @@ from django.core.validators import RegexValidator
 from django.utils import timezone
 from django.urls import reverse
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
 from phonenumber_field.modelfields import PhoneNumberField
 from datetime import date
 from django.core.exceptions import ValidationError
@@ -23,6 +22,9 @@ class Patient(models.Model):
     date_of_register = models.DateField(default=timezone.now)
     medical_staff = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
+    def __str__(self):
+        return f'{self.first_name} {self.last_name}({self.pesel})'
+
     def get_absolute_url(self):
         return reverse('blood-donation', kwargs={'donor_id': self.id})
 
@@ -30,11 +32,16 @@ class Patient(models.Model):
         phone_number = str(self.phone_number)
         return f'{phone_number[:-9]} {phone_number[-9:-6]} {phone_number[-6:-3]} {phone_number[-3:]}'
 
+    def last_correct_donation(self):
+        # last correct donation
+        return Donation.objects.filter(patient=self, accept_donate=True).values_list('date_of_donation', flat=True)\
+            .latest('date_of_donation')
+
     def donor_status(self):
         """
         Returns status of donor depends of given blood and gender
         """
-        litres_of_blood = self.donation_set.count() * 0.45
+        litres_of_blood = Patient.given_blood_litres(self)
         if litres_of_blood < 5:
             return 'Beginner Donor'
         elif (self.gender == 'male' and litres_of_blood >= 18) or \
@@ -50,18 +57,26 @@ class Patient(models.Model):
             return 'Never donated'
 
     def can_donate(self):
-        number_of_days_from_last_donate = (date.today() - self.donation_set.all().last().date_of_donation).days
-        if number_of_days_from_last_donate >= 90:
-            donor_can_donate = 'Yes'
+        # checks if donor can donate
+        last_donate = Patient.last_correct_donation(self)
+        days_from_last_donate = (date.today() - last_donate).days
+        if days_from_last_donate >= 90:
+            return 'Yes'
         else:
-            donor_can_donate = f'No ({90 - number_of_days_from_last_donate} days left)'
-        return donor_can_donate
+            return f'No ({days_from_last_donate} days left)'
 
     def given_blood_litres(self):
-        return self.donation_set.count() * 0.45
+        return Donation.objects.filter(patient=self).count() * 0.45
 
-    def __str__(self):
-        return f'{self.first_name} {self.last_name}({self.pesel})'
+    def medical_worker_responsible_for_register(self):
+        full_repr_of_medical = Patient.objects.select_related('medical_staff', 'medical_staff__profile').get(id=self.id)
+        return f'{full_repr_of_medical.medical_staff.profile.position} ' \
+               f'{full_repr_of_medical.medical_staff.first_name} ' \
+               f'{full_repr_of_medical.medical_staff.last_name}'
+
+    def history_of_donation(self):
+        # history of donations
+        return Donation.objects.filter(patient_id=self.id).select_related('medical_staff').order_by('-date_of_donation')
 
 
 class Donation(models.Model):
