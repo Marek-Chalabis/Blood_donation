@@ -25,7 +25,7 @@ SECRET_KEY = '&)k3&=_%c7@5035@l0+)d2j^nl_+@w)z(@nik0ce%qs3ue2n5v'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar'
 ]
 
 MIDDLEWARE = [
@@ -54,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'blood_dontaion.urls'
@@ -143,3 +145,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = '***'
 EMAIL_HOST_PASSWORD = '***'
 EMAIL_PORT = 587
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]

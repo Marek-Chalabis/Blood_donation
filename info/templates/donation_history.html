@@ -1,0 +1,13 @@
+{% load crispy_forms_tags %}
+
+<div class="border-bottom border-secondary m-1">
+    Medical worker: <i>{{ donation.medic_full_description }}</i>
+    <br>Date: <i>{{ donation.date_of_donation|date:"Y-m-d" }}</i>
+    <br>Blood donation:
+    {% if donation.accept_donate == True %}
+        <b class="text-success">allowed</b>
+    {% else %}
+        <b class="text-danger">banned</b>
+        <br>Information: {{ donation.refuse_information }}
+    {% endif %}
+</div>

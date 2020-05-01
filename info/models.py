@@ -6,7 +6,8 @@ from django.contrib.auth.models import User
 from phonenumber_field.modelfields import PhoneNumberField
 from datetime import date
 from django.core.exceptions import ValidationError
-
+from django.db.models.functions import Concat
+from django.db.models import Count, F, Value
 
 class Patient(models.Model):
     first_name = models.CharField(max_length=30)
@@ -37,11 +38,14 @@ class Patient(models.Model):
         return Donation.objects.filter(patient=self, accept_donate=True).values_list('date_of_donation', flat=True)\
             .latest('date_of_donation')
 
-    def donor_status(self):
+    def donor_status(self, litres_of_blood=None):
         """
         Returns status of donor depends of given blood and gender
         """
-        litres_of_blood = Patient.given_blood_litres(self)
+
+        if litres_of_blood == None:
+            litres_of_blood = Patient.given_blood_litres(self)
+
         if litres_of_blood < 5:
             return 'Beginner Donor'
         elif (self.gender == 'male' and litres_of_blood >= 18) or \
@@ -56,9 +60,10 @@ class Patient(models.Model):
         else:
             return 'Never donated'
 
-    def can_donate(self):
+    def can_donate(self, last_donate=None):
         # checks if donor can donate
-        last_donate = Patient.last_correct_donation(self)
+        if last_donate == None:
+            last_donate = Patient.last_correct_donation(self)
         days_from_last_donate = (date.today() - last_donate).days
         if days_from_last_donate >= 90:
             return 'Yes'
@@ -76,7 +81,12 @@ class Patient(models.Model):
 
     def history_of_donation(self):
         # history of donations
-        return Donation.objects.filter(patient_id=self.id).select_related('medical_staff').order_by('-date_of_donation')
+        return Donation.objects.filter(patient_id=self.id)\
+            .select_related('medical_staff', 'medical_staff__profile')\
+            .annotate(medic_full_description=Concat(F('medical_staff__profile__position'), Value(' '),
+                                               F('medical_staff__first_name'), Value(' '),
+                                               F('medical_staff__last_name')))\
+            .order_by('-date_of_donation')
 
 
 class Donation(models.Model):
@@ -93,3 +103,4 @@ class Donation(models.Model):
     def __str__(self):
         return f'Patient-{self.patient.pesel} Staff-{self.medical_staff.first_name} ' \
                f'{self.medical_staff.last_name} data-{self.date_of_donation}'
+

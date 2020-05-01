@@ -8,9 +8,9 @@ from .filters import PatientFilter
 from .models import Patient, Donation
 from django.contrib.auth.models import User
 from .forms import PatientForm, DonationForm, InfoForDonor, UpdatePatientForm
-from django.db.models import Count, Q
+from django.db.models import Count, F, Value, Max, Case, When, CharField, ExpressionWrapper, Q
 from users.models import Profile
-
+from django.db.models.functions import Concat
 # =========================== VIEWS FOR EVERYONE ============================
 
 
@@ -63,18 +63,23 @@ def info_donor(request):
         form = InfoForDonor(request.POST)
         if form.is_valid():
             pesel = form.cleaned_data['pesel']
-            donor = Patient.objects.filter(pesel=pesel)
+            donor_check = Patient.objects.filter(pesel=pesel)
             # checks if donor was in db
-            if donor.exists():
+            if donor_check.exists():
+                donor = donor_check[0]
                 last_name = form.cleaned_data['last_name']
                 first_name = form.cleaned_data['first_name']
                 # checks if data is correct
-                if first_name != donor[0].first_name:
+                if first_name != donor.first_name:
                     messages.warning(request, f'Fist name({first_name}) is not valid for-{pesel}')
-                elif last_name != donor[0].last_name:
+                elif last_name != donor.last_name:
                     messages.warning(request, f'Last name({last_name}) is not valid for-{pesel}')
                 else:
-                    context['donor'] = donor[0]
+                    given_blood_litres = Patient.given_blood_litres(donor)
+                    context['donor'] = donor
+                    context['given_blood_litres'] = given_blood_litres
+                    context['status'] = Patient.donor_status(donor, given_blood_litres)
+                    context['can_donate'] = Patient.can_donate(donor)
                     context['form'] = form
                     return render(request, 'donor_info.html', context)
             else:
@@ -103,7 +108,6 @@ def donate(request):
 @login_required
 def blood_donation(request, donor_id):
     donor = Patient.objects.get(id=donor_id)
-
     if request.method == 'POST':
         form = DonationForm(request.POST)
         if form.is_valid():
@@ -121,7 +125,9 @@ def blood_donation(request, donor_id):
 
 
 class PatientListView(LoginRequiredMixin, ListView):
-    model = Patient
+    # adds dates of last correct donation
+    queryset = Patient.objects\
+        .annotate(last_correct_donation=Max('donation__date_of_donation', filter=Q(donation__accept_donate=True)))
     template_name = 'Patient/patient.html'
     ordering = ['last_name', 'first_name']
     context_object_name = 'patients'
@@ -135,6 +141,16 @@ class PatientListView(LoginRequiredMixin, ListView):
 class PatientDetailView(LoginRequiredMixin, DetailView):
     model = Patient
     template_name = 'Patient/patient_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        donor = context['object']
+        given_blood_litres = Patient.given_blood_litres(donor)
+        context['donor'] = donor
+        context['given_blood_litres'] = given_blood_litres
+        context['status'] = Patient.donor_status(donor, given_blood_litres)
+        context['can_donate'] = Patient.can_donate(donor)
+        return context
 
 
 class PatientCreateView(LoginRequiredMixin, CreateView):
