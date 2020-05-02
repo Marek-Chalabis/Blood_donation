@@ -52,7 +52,8 @@ def info_branch(request, branch):
         'bloods': {blood_tuple[0]: round((blood_tuple[1] * 100) / current_blood_status_for_blood, 2) for blood_tuple in
                    blood},
         'cities': available_cities,
-        'staff': staff
+        'staff': staff,
+        'branch': branch
     }
     return render(request, 'branch_info.html', context)
 

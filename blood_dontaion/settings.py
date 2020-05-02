@@ -1,6 +1,6 @@
 import os
-import super_secret_informations
-print(super_secret_informations.SECRET_KEY)
+from . import super_secret_informations
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -12,10 +12,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = super_secret_informations.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True    # todo nie zaomnij
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']   # todo niezapomnij dodac
-
+ALLOWED_HOSTS = ['127.0.0.1']
 
 # Application definition
 
@@ -33,7 +32,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # debug
     'debug_toolbar',
 ]
 
@@ -45,13 +43,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # debug
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     # caching   NEEDS TO BE IN THIS ORDER !!! CASHES ALL THE WEBSITE
     'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
-
 ]
 
 ROOT_URLCONF = 'blood_dontaion.urls'
@@ -122,14 +119,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'main'
@@ -138,17 +137,17 @@ LOGIN_URL = 'login'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = '***'
-EMAIL_HOST_PASSWORD = '***'
+EMAIL_HOST_USER = super_secret_informations.EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = super_secret_informations.EMAIL_HOST_PASSWORD
 EMAIL_PORT = 587
 
-
-
+# debug
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
 
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+# stores cashes
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'   # saves sessions in db auto clear them
 
 CACHES = {
     'default': {
@@ -156,7 +155,7 @@ CACHES = {
         'LOCATION': 'cache_table',  # DB table for caches
         'TIMEOUT': 60 * 60 * 24 * 7,  # how long caches exists (seconds) - 7 days lot of data small traffic
         'OPTIONS': {
-            'MAX_ENTRIES': 50,  # number of cashes uses
+            'MAX_ENTRIES': 100,  # number of cashes uses
             'CULL_FREQUENCY': 0,  # resets caches after MAX_ENTRIES was "done"
         }
     }
