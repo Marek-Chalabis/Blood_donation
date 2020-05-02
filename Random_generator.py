@@ -183,7 +183,7 @@ class Person:
         elif int(year) >= 2000:
             pesel_correct += str(int(month) + 20)
         if len(day) == 1:
-            pesel_correct += str(0) + str(month)
+            pesel_correct += str(0) + str(day)
         else:
             pesel_correct += str(day)
         pesel_correct += str(random.randint(0, 9)) + str(random.randint(0, 9)) + str(random.randint(0, 9))
