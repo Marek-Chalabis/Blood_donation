@@ -153,7 +153,7 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',   # saves caches in DB
         'LOCATION': 'cache_table',  # DB table for caches
-        'TIMEOUT': 60 * 60 * 24 * 7,  # how long caches exists (seconds) - 7 days lot of data small traffic
+        'TIMEOUT': 60 * 60 * 24,  # how long caches exists (seconds)
         'OPTIONS': {
             'MAX_ENTRIES': 100,  # number of cashes uses
             'CULL_FREQUENCY': 0,  # resets caches after MAX_ENTRIES was "done"
