@@ -206,5 +206,6 @@ print('Follow the instructions below'
       '\n\nfor donate in donation_json:     new_donation = Donation(medical_staff=random.choice(users_list), patient=random.choice(patient_list), accept_donate=donate["accept_donate"], refuse_information=donate["refuse_information"], date_of_donation=donate["date_of_donation"]);     new_donation.save();'
       '\n\nexit()'
       '\n\nmanage.py createsuperuser'
+      '\n\npython manage.py createcachetable'
       '\n\nmanage.py runserver'
       '\n\n===LOOK TO THE TOP===')
