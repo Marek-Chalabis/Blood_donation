@@ -3,6 +3,7 @@ from django.urls import path, include
 from .views import info_main, donate, blood_donation, info_donor, info_branch, \
     PatientCreateView, PatientListView, PatientDetailView, PatientUpdateView
 
+
 urlpatterns = [
     path('', info_main, name="main"),
     path('donor-informations/', info_donor, name='info-donor'),
