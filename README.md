@@ -42,7 +42,7 @@ All registered donors can be found on admin page( Info › Patients)(https://blo
 * HTML5/CSS
 
 ## Setup
-1. Install Python(+ all modules used in programs, use -pip freeze-) and Django 
+1. Install Python(+ all modules, use -pip freeze-) and Django 
 2. Run program "fill_DB_blood_donation.py" and follow instructions there to run project and create your own unique DB
 
 ## Features
