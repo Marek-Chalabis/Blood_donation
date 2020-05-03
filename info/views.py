@@ -32,6 +32,7 @@ def info_main(request):
 
 
 def info_branch(request, branch):
+    context = {'branch': branch}
     # remove actual branch from cities
     available_cities = list(User.objects.values_list('profile__branch', flat=True).distinct())
     available_cities.remove(branch)
@@ -46,15 +47,15 @@ def info_branch(request, branch):
         .annotate(total=Count('donation')).order_by('total')
 
     staff = Profile.objects.filter(branch=branch, user__is_staff=False).select_related('user').all()
-    context = {
-        # just to add some logic into view
-        'blood_all': {blood_tuple[0]: round((blood_tuple[1] * 100) / current_blood_status, 2) for blood_tuple in blood},
-        'bloods': {blood_tuple[0]: round((blood_tuple[1] * 100) / current_blood_status_for_blood, 2) for blood_tuple in
-                   blood},
-        'cities': available_cities,
-        'staff': staff,
-        'branch': branch
-    }
+
+    # just to add some logic into view
+    context['blood_all'] = {blood_tuple[0]: round((blood_tuple[1] * 100)
+                                                  / current_blood_status, 2) for blood_tuple in blood}
+    context['bloods'] = {blood_tuple[0]: round((blood_tuple[1] * 100)
+                                               / current_blood_status_for_blood, 2) for blood_tuple in blood}
+    context['cities'] = available_cities
+    context['staff'] = staff
+
     return render(request, 'branch_info.html', context)
 
 
