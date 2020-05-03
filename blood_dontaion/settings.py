@@ -45,10 +45,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    # caching   NEEDS TO BE IN THIS ORDER !!! CASHES ALL THE WEBSITE
-    'django.middleware.cache.UpdateCacheMiddleware',
+    # caching   NEEDS TO BE IN THIS ORDER if you want auto cache for all website + uncomment all middleware
+    #'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',
+    #'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
 ROOT_URLCONF = 'blood_dontaion.urls'
@@ -146,17 +146,9 @@ INTERNAL_IPS = [
     '127.0.0.1',
 ]
 
-# stores cashes
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'   # saves sessions in db auto clear them
-
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',   # saves caches in DB
-        'LOCATION': 'cache_table',  # DB table for caches
-        'TIMEOUT': 60 * 60,  # how long caches exists (seconds)
-        'OPTIONS': {
-            'MAX_ENTRIES': 100,  # number of cashes uses
-            'CULL_FREQUENCY': 0,  # resets caches after MAX_ENTRIES was "done"
-        }
+        'LOCATION': 'cache_table'  # DB table for caches
     }
 }

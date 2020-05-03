@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load cache %}
+
 
 {% block left %}
 
@@ -82,6 +84,7 @@ chart_reserve.render();
 {% endblock %}
 
 {% block right %}
+
 <h3 class="text-center">Medical Staff</h3>
     <div class="border" style="height: 450px; overflow:auto; background-color:white;">
         {% for s in staff %}
@@ -92,4 +95,5 @@ chart_reserve.render();
             </div>
         {% endfor %}
     </div>
+
 {% endblock %}

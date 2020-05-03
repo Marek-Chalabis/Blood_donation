@@ -24,7 +24,7 @@ class Patient:
         sex = random.choice(['M', 'F'])
         first_name, last_name = Random_generator.Person.full_name(sex)
         gender = 'male' if sex == 'M' else 'female'
-        birth_date = Random_generator.Basic.random_date('1930-01-01', '2000-12-20')
+        birth_date = Random_generator.Basic.random_date('1930-01-01', '2000-06-01')
         # make sure that donors are 18+
         date_to_majority = datetime.datetime.strptime(birth_date, "%Y-%m-%d")
         register_day = date_to_majority + datetime.timedelta(days=6575)
@@ -53,42 +53,39 @@ class Donation:
     """
     Create Donation
     """
-    list_of_donations = []
-    list_of_patients = []
+    list_of_patients = {}
 
     def __init__(self, patient):
         self.patient = patient
 
-        if patient not in Donation.list_of_patients:
+        if patient not in Donation.list_of_patients.keys():
             self.date_of_donation = patient.date_of_register
-            self.accept_donate = random.choices(population=['True', 'False'], weights=[85, 15])[0]
-            Donation.list_of_patients.append(self.patient)
+            accept_donate = random.choices(population=['True', 'False'], weights=[85, 15])[0]
+            self.accept_donate = accept_donate
+            Donation.list_of_patients[patient] = [patient.date_of_register]
         else:
-            self.date_of_donation, self.accept_donate = Donation.__date_of_next_donate(self.patient)
+            self.date_of_donation, self.accept_donate = Donation.__date_of_next_donate(patient)
 
         self.refuse_information = None if self.accept_donate == 'True' else Random_generator.Basic.words(
             random.randint(10, 30))
-        Donation.list_of_donations.append(self)
 
     @classmethod
     def __date_of_next_donate(cls, patient_to_find):
         """
         returns date of next donation or remove patient if he cannot donate
         """
-        dates = []
-        for donation in cls.list_of_donations:
-            if donation.patient == patient_to_find:
-                dates.append(donation.date_of_donation)
-        last_donate = datetime.datetime.strptime(dates[-1], "%Y-%m-%d")
-
+        donate = Donation.list_of_patients[patient_to_find][-1]
+        last_donate = datetime.datetime.strptime(donate, "%Y-%m-%d")
         if (datetime.datetime.today() - last_donate).days < 91:
             correct_date_to_donate = last_donate + datetime.timedelta(
                 days=random.randint(1, (datetime.datetime.today() - last_donate).days))
+            # remove patient from list
             Patient.list_of_patients.remove(patient_to_find)
             return correct_date_to_donate.strftime("%Y-%m-%d"), "False"
         else:
             correct_date_to_donate = last_donate + datetime.timedelta(days=90)
             date_donate = Random_generator.Basic.random_date(correct_date_to_donate)
+            Donation.list_of_patients[patient_to_find] += [date_donate]
             return date_donate, random.choices(population=['True', 'False'], weights=[75, 25])[0]
 
 
@@ -107,14 +104,14 @@ def users_json(path_folder):
     """Create json file for users and saves"""
     json_info = []
     list_username = ['admin']
-    for i in range(NUMBER_OF_USERS):
+    for _ in range(NUMBER_OF_USERS):
         username = Random_generator.Basic.words(1)
         while username in list_username:
             username = Random_generator.Basic.words(1)
-        list_username.append(username)
+        list_username += [username]
         first_name, last_name = Random_generator.Person.full_name()
         json_info.append({
-            'username': Random_generator.Basic.words(1),
+            'username': username,
             'email': Random_generator.Person.email(),
             'password': Random_generator.Person.password(),
             'first_name': first_name,
@@ -128,7 +125,7 @@ def profile_json(path_folder):
     """Create json file for profile and saves"""
     json_info = []
     images = Random_generator.Basic.image(path_folder, 'hospital', 30)
-    for i in range(NUMBER_OF_USERS):
+    for _ in range(NUMBER_OF_USERS):
         json_info.append({
             'image': random.choice(images),
             'position': random.choice(['doctor', 'resident doctor', 'medical specialist', 'habilitated doctor',
@@ -142,7 +139,7 @@ def profile_json(path_folder):
 def patient_json(path_folder):
     """Create json file for patient and saves"""
     json_info = []
-    for i in range(NUMBER_OF_PATIENTS):
+    for _ in range(NUMBER_OF_PATIENTS):
         patient = Patient()
         json_info.append({
             'first_name': patient.first_name,
@@ -162,11 +159,12 @@ def patient_json(path_folder):
 def donation_json(path_folder):
     """Create json file for donation and saves"""
     json_info = []
-    for i in range(NUMBER_OF_DONATION):
+    for _ in range(NUMBER_OF_DONATION):
         donation = Donation(random.choice(Patient.list_of_patients))
         json_info.append({
             # medical_staff ADD IN SHELL
-            # patient ADD IN SHELL
+            'pesel_test': donation.patient.pesel,
+            'patient_pesel': donation.patient.pesel,
             'date_of_donation': donation.date_of_donation,
             'accept_donate': donation.accept_donate,
             'refuse_information': donation.refuse_information,
@@ -191,21 +189,23 @@ while True:
               'If this will happen more times you need to lower NUMBER_OF_DONATION or add more to NUMBER OF PATIENTS')
         Patient.list_of_patients.clear()
         Donation.list_of_patients.clear()
-        Donation.list_of_donations.clear()
+        # checks if there are patients in the list left
+        if len(Donation.list_of_donations) != 0:
+            Donation.list_of_donations.clear()
         pass
 
 print('Follow the instructions below'
       '\n===Go to django terminal and write this commends:==='
-      '\n\nmanage.py makemigrations'
-      '\n\nmanage.py migrate'
-      '\n\nmanage.py shell'
+      '\n\npython manage.py makemigrations'
+      '\n\npython manage.py migrate'
+      '\n\npython manage.py shell'
       '\n\nimport json;from users.models import *;from info.models import *;from django.contrib.auth.models import User;from django.core.files import File;import random;users_list=[];patient_list=[];'
       '\n\nwith open("dummy_data/users.json") as file_users, open("dummy_data/profile.json") as file_profile, open("dummy_data/patient.json") as file_patient, open("dummy_data/donation.json") as file_donation:    users_json=json.load(file_users);    profile_json=json.load(file_profile);    patient_json=json.load(file_patient);    donation_json=json.load(file_donation);'
       '\n\nfor user, profile_user in zip(users_json, profile_json):     new_user = User(username=user["username"], email=user["email"], password=user["password"], first_name=user["first_name"], last_name=user["last_name"]);     new_user.save();     new_user.profile.position=profile_user["position"];     new_user.save();     new_user.profile.branch=profile_user["branch"];     new_user.save();      new_user.profile.image.save(f"{new_user.username}.jpg", File(open(profile_user["image"], "rb")));     users_list.append(new_user);'
-      '\n\nfor patient in patient_json:     new_patient = Patient(first_name=patient["first_name"], last_name=patient["last_name"], gender=patient["gender"], email=patient["email"], pesel=patient["pesel"], blood_group=patient["blood_group"], phone_number=patient["phone_number"], date_of_register=patient["date_of_register"], medical_staff=random.choice(users_list));     new_patient.save();     patient_list.append(new_patient);'
-      '\n\nfor donate in donation_json:     new_donation = Donation(medical_staff=random.choice(users_list), patient=random.choice(patient_list), accept_donate=donate["accept_donate"], refuse_information=donate["refuse_information"], date_of_donation=donate["date_of_donation"]);     new_donation.save();'
+      '\n\nfor patient in patient_json:     new_patient = Patient(first_name=patient["first_name"], last_name=patient["last_name"], gender=patient["gender"], email=patient["email"], pesel=patient["pesel"], blood_group=patient["blood_group"], phone_number=patient["phone_number"], date_of_register=patient["date_of_register"], medical_staff=random.choice(users_list));     new_patient.save();'
+      '\n\nfor donate in donation_json:     correct_patient = Patient.objects.get(pesel=donate["patient_pesel"]);    new_donation = Donation(medical_staff=random.choice(users_list), patient=correct_patient, accept_donate=donate["accept_donate"], refuse_information=donate["refuse_information"], date_of_donation=donate["date_of_donation"]);     new_donation.save();'
       '\n\nexit()'
-      '\n\nmanage.py createsuperuser'
+      '\n\npython manage.py createsuperuser'
       '\n\npython manage.py createcachetable'
-      '\n\nmanage.py runserver'
+      '\n\npython manage.py runserver'
       '\n\n===LOOK TO THE TOP===')

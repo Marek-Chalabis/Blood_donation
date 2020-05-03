@@ -11,6 +11,8 @@ from .forms import PatientForm, DonationForm, InfoForDonor, UpdatePatientForm
 from django.db.models import Count, F, Value, Max, Case, When, CharField, ExpressionWrapper, Q
 from users.models import Profile
 from django.db.models.functions import Concat
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 # =========================== VIEWS FOR EVERYONE ============================
 
 
@@ -126,7 +128,9 @@ def blood_donation(request, donor_id):
     return render(request, 'blood_donation.html', context)
 
 
-class PatientListView(LoginRequiredMixin, ListView):
+@method_decorator(login_required, name='dispatch')
+@method_decorator(cache_page(60 * 60), name='dispatch')
+class PatientListView(ListView): #LoginRequiredMixin
     # adds dates of last correct donation
     queryset = Patient.objects\
         .annotate(last_correct_donation=Max('donation__date_of_donation', filter=Q(donation__accept_donate=True)))
@@ -140,6 +144,8 @@ class PatientListView(LoginRequiredMixin, ListView):
         return context
 
 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class PatientDetailView(LoginRequiredMixin, DetailView):
     model = Patient
     template_name = 'Patient/patient_detail.html'

@@ -27,7 +27,7 @@ class Basic:
             letters = string.ascii_lowercase
             word = ''.join(random.choice(letters) for _ in range(word_length))
             full_sentence += word + ' '
-        return full_sentence
+        return full_sentence[:-1]
 
     @staticmethod
     def image(path_to_download, theme='cats', number_of_pics=1):
@@ -160,13 +160,15 @@ class Person:
         return Person.first_name(gender), Person.last_name(gender)
 
     @staticmethod
-    def pesel(gender, date=Basic.random_date('1940-01-01'), majority=False):
+    def pesel(gender, date=None, majority=False):
         """
             Returns PESEL
             gender      -gender of person 'M'-male or 'F'-female
             date        -date to PESEL default=Basic.random_date('1940-01-01')
             majority    -True to return majority person default=False
         """
+        if date == None:
+            date = Basic.random_date('1940-01-01')
         year, month, day = date.split('-')
         if majority:
             while int(datetime.datetime.today().year) - int(year) < 18:
