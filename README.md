@@ -48,8 +48,6 @@ All registered donors can be found on admin page( Info › Patients)(https://blo
 ## Features
 List of features:
 * optimized queries
-* improved security
-* added caches
 * information about the blood base and employees divided into individual departments
 * authorization system(login, logout, register, reset password, update) with secret key to prevent unauthorized people to login
 * every registered donor can check if they can donate blood
@@ -57,7 +55,10 @@ List of features:
 * an employee can register a donor, update him/her and has insight into his/her detailed information
 * the employee can search for a donor using custom filters
 * App tracks donor status through liters of blood donated
-* There are a lot more features like checks if donor is 18+ or create valid PESEL for doonor, please just go throgh code there is all the informations
+* There are a lot more features like checks if donor is 18+ or create valid PESEL for doonor, please just go throgh code there is all 
+the informations
+* improved security
+* added caches
 
 To-do list:
 * add application that track blood collection from the blood bank
