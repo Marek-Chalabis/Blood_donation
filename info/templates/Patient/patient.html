@@ -37,13 +37,7 @@
                 <td>{{ patient.email }}</td>
                 <td>{{ patient.formatted_phone_number }}</td>
                 <td>{{ patient.blood_group }}</td>
-                <td>
-                    {% if patient.last_correct_donation == None %}
-                        Never donated
-                    {% else %}
-                         {{ patient.last_correct_donation|date:"Y-m-d" }}
-                    {% endif %}
-                </td>
+                <td>{{ if patient.last_correct_donation }}</td>
             </tr>
             {% endfor %}
             </tbody>

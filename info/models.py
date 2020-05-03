@@ -35,8 +35,11 @@ class Patient(models.Model):
 
     def last_correct_donation(self):
         # last correct donation
-        return Donation.objects.filter(patient=self, accept_donate=True).values_list('date_of_donation', flat=True)\
-            .latest('date_of_donation')
+        try:
+            return Donation.objects.filter(patient=self, accept_donate=True).values_list('date_of_donation', flat=True)\
+                .latest('date_of_donation')
+        except:
+            return None
 
     def donor_status(self, litres_of_blood=None):
         """
@@ -60,15 +63,18 @@ class Patient(models.Model):
         else:
             return 'Never donated'
 
-    def can_donate(self, last_donate=None):
+    def can_donate(self):
         # checks if donor can donate
+        last_donate = Patient.last_correct_donation(self)
+
         if last_donate == None:
-            last_donate = Patient.last_correct_donation(self)
-        days_from_last_donate = (date.today() - last_donate).days
-        if days_from_last_donate >= 90:
-            return 'Yes'
+            return 'Never donated'
         else:
-            return f'No ({days_from_last_donate} days left)'
+            days_from_last_donate = (date.today() - last_donate).days
+            if days_from_last_donate >= 90:
+                return 'Yes'
+            else:
+                return f'No ({days_from_last_donate} days left)'
 
     def given_blood_litres(self):
         return Donation.objects.filter(patient=self).count() * 0.45

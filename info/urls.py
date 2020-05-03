@@ -7,7 +7,7 @@ from .views import info_main, donate, blood_donation, info_donor, info_branch, \
 urlpatterns = [
     path('', info_main, name="main"),
     path('branch-informations/<str:branch>', info_branch, name='info-branch'),
-    path('donor-informations/', cache_page(60 * 60 * 24)(info_donor), name='info-donor'),
+    path('donor-informations/', info_donor, name='info-donor'),
 
     path('donate/', donate, name="donate"),
     path('donate/<int:donor_id>/', blood_donation, name="blood-donation"),
