@@ -150,6 +150,11 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
+# True to unable toolbar
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': lambda r: False,  # disables it
+    # '...
+}
 
 # # AMAZON S3 (keep static files there uncomment if you want)
 # # COMMENT SAVE METHOD IN USERS -> MODELS PROFILE -> SAVE()
