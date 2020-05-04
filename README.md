@@ -22,8 +22,8 @@ Login as admin:
 * password - admin
 
 Check donor status without login as employee(random examples)
-* PESEL: 73092079322, First_name: Ramona, Last_name: Sikorska
-* PESE: 46020278362, First_name: Magnolia, Last_name: Jasińska
+* PESEL: 33111890134, First_name: Bronisław, Last_name: Adamski
+* PESE: 47092577517, First_name: Tymur, Last_name: Czarnecki
 
 All registered donors can be found on admin page( Info › Patients)(https://blood-dontaion.herokuapp.com/admin/)
 
