@@ -9,9 +9,9 @@ import json
 import datetime
 
 # Fill to get json_file adequate to your needs
-NUMBER_OF_USERS = 60
-NUMBER_OF_PATIENTS = 500
-NUMBER_OF_DONATION = 3500
+NUMBER_OF_USERS = 70
+NUMBER_OF_PATIENTS = 1000
+NUMBER_OF_DONATION = 7000
 
 
 class Patient:
@@ -31,6 +31,7 @@ class Patient:
         self.first_name = first_name
         self.last_name = last_name
         self.gender = gender
+
         self.email = Random_generator.Person.email()
         while self.email in [pat.pesel for pat in Patient.list_of_patients]:
             self.email = Random_generator.Person.email()
@@ -43,7 +44,11 @@ class Patient:
         self.blood_group = random.choices(
             population=['0 Rh+', 'A Rh+', 'B Rh+', 'AB Rh+', '0 Rh-', 'A Rh-', 'B Rh-', 'AB Rh-'],
             weights=[31, 32, 15, 7, 6, 6, 2, 1])[0]
+
         self.phone_number = Random_generator.Person.phone_number()
+        while self.phone_number in [pat.phone_number for pat in Patient.list_of_patients]:
+            self.phone_number = Random_generator.Person.phone_number()
+
         while self.phone_number in [pat.phone_number for pat in Patient.list_of_patients]:
             self.phone_number = Random_generator.Person.phone_number()
         Patient.list_of_patients.append(self)

@@ -57,7 +57,6 @@ def info_branch(request, branch):
                                                / current_blood_status_for_blood, 2) for blood_tuple in blood}
     context['cities'] = available_cities
     context['staff'] = staff
-
     return render(request, 'branch_info.html', context)
 
 
@@ -94,7 +93,7 @@ def info_donor(request):
     return render(request, 'donor_info.html', context)
 
 
-# =================== REQUIRE LOGIN =============
+# ======================== REQUIRE LOGIN ==========================
 
 @login_required
 def donate(request):
@@ -130,7 +129,7 @@ def blood_donation(request, donor_id):
 
 @method_decorator(login_required, name='dispatch')
 @method_decorator(cache_page(60 * 60), name='dispatch')
-class PatientListView(ListView): #LoginRequiredMixin
+class PatientListView(ListView):
     # adds dates of last correct donation
     queryset = Patient.objects\
         .annotate(last_correct_donation=Max('donation__date_of_donation', filter=Q(donation__accept_donate=True)))
@@ -146,7 +145,7 @@ class PatientListView(ListView): #LoginRequiredMixin
 
 @method_decorator(login_required, name='dispatch')
 @method_decorator(cache_page(60 * 15), name='dispatch')
-class PatientDetailView(LoginRequiredMixin, DetailView):
+class PatientDetailView(DetailView):
     model = Patient
     template_name = 'Patient/patient_detail.html'
 

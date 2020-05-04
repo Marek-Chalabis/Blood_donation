@@ -4,7 +4,6 @@ from . import super_secret_informations
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
@@ -14,24 +13,24 @@ SECRET_KEY = super_secret_informations.SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1'] + super_secret_informations.ALLOWED_HOSTS
 
 # Application definition
 
 INSTALLED_APPS = [
-    'info',
     'users.apps.UsersConfig',
-    'crispy_forms',
-    'django_filters',
-    'bootstrapform',
-    'django_cleanup.apps.CleanupConfig',
-    'localflavor',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'info',
+    'crispy_forms',
+    'django_filters',
+    'bootstrapform',
+    'django_cleanup.apps.CleanupConfig',
+    'localflavor',
     'debug_toolbar',
 ]
 
@@ -44,11 +43,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+
+
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    # caching   NEEDS TO BE IN THIS ORDER if you want auto cache for all website + uncomment all middleware
-    #'django.middleware.cache.UpdateCacheMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    #'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
 ROOT_URLCONF = 'blood_dontaion.urls'
@@ -56,7 +53,7 @@ ROOT_URLCONF = 'blood_dontaion.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -107,7 +104,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Warsaw'
 
 USE_I18N = True
 
@@ -127,13 +124,13 @@ MEDIA_URL = '/media/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+# login/logout routine
 LOGIN_REDIRECT_URL = 'main'
+LOGOUT_REDIRECT_URL = 'main'
 LOGIN_URL = 'login'
 
+# email info
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
@@ -141,14 +138,34 @@ EMAIL_HOST_USER = super_secret_informations.EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = super_secret_informations.EMAIL_HOST_PASSWORD
 EMAIL_PORT = 587
 
-# debug
-INTERNAL_IPS = [
-    '127.0.0.1',
-]
-
+# caches
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',   # saves caches in DB
         'LOCATION': 'cache_table'  # DB table for caches
     }
 }
+
+# ADDS FOR APPS
+# bootstrap - updated visuals
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+# IP for debug_toolbar (only for local right now)
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+
+# # AMAZON S3 (keep static files there uncomment if you want)
+# # COMMENT SAVE METHOD IN USERS -> MODELS PROFILE -> SAVE()
+# AWS_ACCESS_KEY_ID = super_secret_informations.AWS_ACCESS_KEY_ID
+# AWS_SECRET_ACCESS_KEY = super_secret_informations.AWS_SECRET_ACCESS_KEY
+# AWS_STORAGE_BUCKET_NAME = super_secret_informations.AWS_STORAGE_BUCKET_NAME
+#
+# # boto and django-storages settings
+# INSTALLED_APPS += ['storages']
+# # this 2 options can be necessary to uncomment depends on your AWS settings
+# # AWS_S3_REGION_NAME = "eu-west-2"
+# # AWS_S3_ADDRESSING_STYLE = "virtual"
+# AWS_S3_FILE_OVERWRITE = False  # do not allows to overwrite files
+# AWS_DEFAULT_ACL = None
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
