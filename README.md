@@ -39,6 +39,7 @@ All registered donors can be found on admin page( Info › Patients)(https://blo
 * Django - version 3.05
 * bootstrap - version 4.4.1
 * jquery - version 3.4.1
+* AWS S3
 * HTML5/CSS
 
 ## Setup
@@ -55,10 +56,10 @@ List of features:
 * an employee can register a donor, update him/her and has insight into his/her detailed information
 * the employee can search for a donor using custom filters
 * App tracks donor status through liters of blood donated
-* There are a lot more features like checks if donor is 18+ or create valid PESEL for doonor, please just go throgh code there is all 
-the informations
 * improved security
 * added caches
+* There are a lot more features like checks if donor is 18+ or create valid PESEL for doonor, please just go throgh code there is all 
+the informations
 
 To-do list:
 * add application that track blood collection from the blood bank
