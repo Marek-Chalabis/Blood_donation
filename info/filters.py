@@ -23,9 +23,6 @@ class PatientFilter(django_filters.FilterSet):
             Q(date_of_donation__gte=datetime.datetime.now() - datetime.timedelta(days=90)) &
             Q(accept_donate=True)) \
             .all().values_list('patient__id', flat=True)
-        from django.db import connection
-        print(connection.queries)
-        print(len(connection.queries))
 
         if value == 'Yes':
             return queryset.exclude(id__in=not_able_donation_id)
