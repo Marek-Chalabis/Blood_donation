@@ -19,7 +19,7 @@ class PatientFilter(django_filters.FilterSet):
         Returns donors that last donate was more then 90 days ago
         """
         # list of id patients  who donated under 90 days from today AND donation was accepted
-        not_able_donation_id = Donation.objects.filter(
+        not_able_donation_id = Donation.objects.select_related('patient').filter(
             Q(date_of_donation__gte=datetime.datetime.now() - datetime.timedelta(days=90)) &
             Q(accept_donate=True)) \
             .all().values_list('patient__id', flat=True)
