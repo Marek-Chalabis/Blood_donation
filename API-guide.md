@@ -14,14 +14,15 @@
 ### URIs_list
 
 | URI | Method   |
+| --- |  ------- |
 | `/api/v1/`  | **GET** |
 | --- |  ------- |
-| Permission | N/A      | **GET** |
+| Permission | All      | 
 ##### GET
 
 Returns list of avalible URIs.
 
-###Patient_list
+### Patient_list
 URI	Relation	Verbs
 /readers/	http://schema.yudu.com/readers	GET, POST
 GET
