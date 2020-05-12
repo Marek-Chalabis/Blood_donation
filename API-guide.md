@@ -19,4 +19,4 @@
 
 ##### GET
 
-A **GET** request returns the XML representation of the service: a list of links to the other available URIs in the service.
+Returns list of avalible URIs.
