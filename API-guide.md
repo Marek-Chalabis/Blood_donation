@@ -26,7 +26,7 @@ Returns list of avalible URIs.
 
 | URI                  | Method         |**GET**     |**POST** |
 | -------------------- |  ------------- |  --------- |-------- |
-| `/api/v1/patients/`  | Permission     | Users      | Admin/staff 
+| `/api/v1/patients/`  | Permission     | Users      | Users   |
 
 ##### **GET**
 
@@ -43,7 +43,7 @@ Returns list of Patients with all of ther donations and medical employee resposi
 | **email**      | exact, icontains          | Django’s built-in lookup |
 | **phone_number**      | exact, icontains          | Django’s built-in lookup |
 | **date_of_register**      | exact, icontains, gt, gte, lt, lte, year, month, day          | Django’s built-in lookup |
-| **registered_by**      | exact          | Django’s built-in lookup |
-| **subscription**      | Integer          | Django’s built-in lookup |
-| **subscription**      | Integer          | Django’s built-in lookup |
-| **subscription**      | Integer          | Django’s built-in lookup |
+| **can_donate**      | exact          | Django’s built-in lookup |
+| **search**      | custom          | Search given value in: first_name, last_name, pesel, email, phone_number   |
+| **fields**      | Selective fields          | returns only selected fields |
+| **omit**      | Selective fields          | returns all fields except omited ones |
