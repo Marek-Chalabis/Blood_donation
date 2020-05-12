@@ -3,14 +3,12 @@
 
 
 
-| Resource                                              | GET                                                 | POST                                  | PUT                               | DELETE                                      |
+| URI                                              | GET                                                 | POST                                  | PUT                               | DELETE                                      |
 | ----------------------------------------------------- | --------------------------------------------------- | ------------------------------------- | --------------------------------- | ------------------------------------------- |
 | [/api/v1/](#URIs_list)                             | Returns a list of links to the other available URIs | N/A                                   | N/A                               | N/A                                         |
 | [/api/v1/patients/](#Patient_list)                                 | Returns a list of patients                           | Creates a new patient                  | N/A                               | N/A                                         |
-| [/readers/{id}](#reader)                             | Returns the details of a single reader              | N/A                                   | Updates a reader                  | Deletes a reader                            |
 
 
-## Resources
 ### URIs_list
 
 | URI | Method   |**GET** |
@@ -30,7 +28,7 @@ Returns list of avalible URIs.
 
 > GET
 
-Returns list of Patients with all of ther donations and medical employee resposible for register, also there is added dynamic field which returns information if the current Patient can donate.
+Returns list of Patients with all of their donations and medical employee responsible for register, also there is added dynamic field which returns information if the current Patient can donate
 
 | Filter                | lookups           | Description |
 | --------------------- | ---------------- | ----------- |
@@ -45,5 +43,5 @@ Returns list of Patients with all of ther donations and medical employee resposi
 | **date_of_register**      | exact, icontains, gt, gte, lt, lte, year, month, day          | Django’s built-in lookup |
 | **can_donate**      | exact          | Django’s built-in lookup |
 | **search**      | custom          | Search given value in: first_name, last_name, pesel, email, phone_number   |
-| **fields**      | Selective fields          | returns only selected fields |
-| **omit**      | Selective fields          | returns all fields except omited ones |
+| **fields**      | Selective fields          | Returns only selected fields |
+| **omit**      | Selective fields          | Returns all fields except omitted ones |
