@@ -13,16 +13,21 @@
 ## Resources
 ### URIs_list
 
-| URI | Method   |
-| --- |  ------- |
-| `/api/v1/`  | **GET** |
-| Permission | All      | 
+| URI | Method   |**GET** |
+| --- |  ------- |  ------- |
+| `/api/v1/`  | Permission |All      |
+
+
 ##### GET
 
 Returns list of avalible URIs.
 
 ### Patient_list
 
+| URI | Method   |
+| --- |  ------- |
+| `/api/v1/patients/`  | **GET** |
+| Permission | Users      | 
 
 URI	Relation	Verbs
 /readers/		GET, POST
