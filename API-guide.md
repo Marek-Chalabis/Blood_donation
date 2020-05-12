@@ -14,7 +14,6 @@
 ### URIs_list
 
 | URI | Method   |
-| --- |  ------- |
 | `/api/v1/`  | **GET** |
 | --- |  ------- |
 | Permission | N/A      | **GET** |
