@@ -45,3 +45,5 @@ Returns list of Patients with all of their donations and medical employee respon
 | **search**      | custom          | Search given value in: first_name, last_name, pesel, email, phone_number   |
 | **fields**      | Selective fields          | Returns only selected fields |
 | **omit**      | Selective fields          | Returns all fields except omitted ones |
+| **page**      | Pagination          | Returns page |
+| **page_size**      | Pagination          | Returns number of records on page (default=200, max_page_size=1000 |
