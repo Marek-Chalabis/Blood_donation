@@ -13,10 +13,11 @@
 ## Resources
 ### URIs_list
 
-| URI | Relation | Verbs   |
-| --- | -------- | ------- |
-| `/api/v1/` | N/A      | **GET** |
-
+| URI | Method   |
+| --- |  ------- |
+| `/api/v1/`  | **GET** |
+| --- |  ------- |
+| Permission | N/A      | **GET** |
 ##### GET
 
 Returns list of avalible URIs.
