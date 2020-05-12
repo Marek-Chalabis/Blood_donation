@@ -18,7 +18,7 @@
 | `/api/v1/`  | Permission |All      |
 
 
-**GET**
+> GET
 
 Returns list of avalible URIs.
 
@@ -28,7 +28,7 @@ Returns list of avalible URIs.
 | -------------------- |  ------------- |  --------- |-------- |
 | `/api/v1/patients/`  | Permission     | Users      | Users   |
 
-**GET**
+> GET
 
 Returns list of Patients with all of ther donations and medical employee resposible for register, also there is added dynamic field which returns information if the current Patient can donate.
 
