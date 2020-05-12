@@ -22,8 +22,10 @@
 Returns list of avalible URIs.
 
 ### Patient_list
+
+
 URI	Relation	Verbs
-/readers/	http://schema.yudu.com/readers	GET, POST
+/readers/		GET, POST
 GET
 A GET request returns the XML representation of a list of readers, optionally filtered using the following query string parameters, as well as the pagination parameters described in Pagination.
 
