@@ -1,5 +1,8 @@
 # IN PROGRESS !!!!!!
 > IN PROGRESS !!!!!!
+
+
+
 | Resource                                              | GET                                                 | POST                                  | PUT                               | DELETE                                      |
 | ----------------------------------------------------- | --------------------------------------------------- | ------------------------------------- | --------------------------------- | ------------------------------------------- |
 | [/](#service-description)                             | Returns a list of links to the other available URIs | N/A                                   | N/A                               | N/A                                         |
@@ -20,3 +23,5 @@
 | [/readers/{id}/authorisedDevices](#authorised-device) | N/A                                                 | N/A                                   | N/A                               | Removes all authorised devices for a reader |
 | [/readers/{id}/authentication](#authentication)       | N/A                                                 | N/A                                   | Authenticates a reader's password | N/A                                         |
 | [/targetedNotifications](#targeted-notifications)     | N/A                                                 | Sends a targeted notification         | N/A                               | N/A                                         |
+
+## Resources
