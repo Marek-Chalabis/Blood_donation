@@ -16,7 +16,6 @@
 | URI | Method   |
 | --- |  ------- |
 | `/api/v1/`  | **GET** |
-| --- |  ------- |
 | Permission | All      | 
 ##### GET
 
