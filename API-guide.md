@@ -48,6 +48,4 @@ Returns list of Patients with all of their donations and medical employee respon
 | **page**      | Pagination          | Returns page |
 | **page_size**      | Pagination          | Returns number of records on page (default=200, max_page_size=1000 |
 
-Example:
-
-'''/api/v1/patients/?page_size=100&can_donate=true&date_of_register__gte=1990-09-26&omit=registered_by&first_name__icontains=Vit'''
+Example: /api/v1/patients/?page_size=100&can_donate=true&date_of_register__gte=1990-09-26&omit=registered_by&first_name__icontains=Vit
