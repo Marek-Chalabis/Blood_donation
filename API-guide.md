@@ -28,15 +28,22 @@ Returns list of avalible URIs.
 | -------------------- |  ------------- |  --------- |-------- |
 | `/api/v1/patients/`  | Permission     | Users      | Admin/staff 
 
-##### GET
+##### **GET**
 
-A **GET** request returns list of Patients with all of ther donations and medical employee resposible for register, also there is added dynamic field which returns information if the current Patient can donate.
+Returns list of Patients with all of ther donations and medical employee resposible for register, also there is added dynamic field which returns information if the current Patient can donate.
 
-| Filter | Type | Description |
-| ------ | ---- | ----------- |
-| **emailAddress** | String | Filter by email address *prefix* |
-| **username** | String | Filter by username *prefix* |
-| **firstName** | String | Filter by given name *prefix* |
-| **lastName** | String | Filter by family name *prefix* |
-| **nodeId** | Integer | Return only readers created at the given node ID |
-| **subscription** | Integer | Return only readers subscribed to the subscription with the given ID |
+| Filter                | lookups           | Description |
+| --------------------- | ---------------- | ----------- |
+| **id**                | in           | Django’s built-in lookup |
+| **first_name**          | exact, icontains           | Django’s built-in lookup |
+| **last_name**         | exact, icontains           | Django’s built-in lookup |
+| **pesel**          | exact, icontains           | Django’s built-in lookup |
+| **blood_group**            | exact, icontains          | Django’s built-in lookup |
+| **gender**      | exact          | Django’s built-in lookup |
+| **email**      | exact, icontains          | Django’s built-in lookup |
+| **phone_number**      | exact, icontains          | Django’s built-in lookup |
+| **date_of_register**      | exact, icontains, gt, gte, lt, lte, year, month, day          | Django’s built-in lookup |
+| **registered_by**      | exact          | Django’s built-in lookup |
+| **subscription**      | Integer          | Django’s built-in lookup |
+| **subscription**      | Integer          | Django’s built-in lookup |
+| **subscription**      | Integer          | Django’s built-in lookup |
