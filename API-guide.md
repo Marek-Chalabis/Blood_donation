@@ -24,22 +24,19 @@ Returns list of avalible URIs.
 
 ### Patient_list
 
-| URI | Method   |**GET** |**POST** |
-| --- |  ------- |  ------- |------- |
-| `/api/v1/patients/`  | Permission | Users | Admin/staff 
+| URI                  | Method         |**GET**     |**POST** |
+| -------------------- |  ------------- |  --------- |-------- |
+| `/api/v1/patients/`  | Permission     | Users      | Admin/staff 
 
-      | 
-GET
-A GET request returns the XML representation of a list of readers, optionally filtered using the following query string parameters, as well as the pagination parameters described in Pagination.
+##### GET
 
-Filter	Type	Description
-emailAddress	String	Filter by email address prefix
-username	String	Filter by username prefix
-firstName	String	Filter by given name prefix
-lastName	String	Filter by family name prefix
-nodeId	Integer	Return only readers created at the given node ID
-subscription	Integer	Return only readers subscribed to the subscription with the given ID
-POST
-A POST request creates a new reader. The request body must contain the XML representation of a reader with the required fields as detailed in Permissible Fields.
+A **GET** request returns list of Patients with all of ther donations and medical employee resposible for register, also there is added dynamic field which returns information if the current Patient can donate.
 
-A successful POST will result in a 201 CREATED response with a Location header specifying the URI of the newly created resource and the response body will contain the XML representation of the resource (including the id and links).
+| Filter | Type | Description |
+| ------ | ---- | ----------- |
+| **emailAddress** | String | Filter by email address *prefix* |
+| **username** | String | Filter by username *prefix* |
+| **firstName** | String | Filter by given name *prefix* |
+| **lastName** | String | Filter by family name *prefix* |
+| **nodeId** | Integer | Return only readers created at the given node ID |
+| **subscription** | Integer | Return only readers subscribed to the subscription with the given ID |
