@@ -1,14 +1,13 @@
 # IN PROGRESS THERE IS NO CODE IN REPO YET OR ONLINE !!!!!!
-> IN PROGRESS !!!!!!
-
-
+> IN PROGRESS !!!!!
 
 | URI                                              | GET                                                 | POST                                  | PUT                               | DELETE                                      |
 | ----------------------------------------------------- | --------------------------------------------------- | ------------------------------------- | --------------------------------- | ------------------------------------------- |
 | [/api/v1/](#URIs_list)                             | Returns a list of links to the other available URIs | N/A                                   | N/A                               | N/A                                         |
-| [/api/v1/patients/](#Patient_list)                                 | Returns a list of patients                           | Creates a new patient                  | N/A                               | N/A                                         |
+| [/api/v1/patients/](#Patients_list)                                 | Returns a list of patients                           | Creates a new patient                  | N/A                               | N/A                                         |
 | [/api/v1/patients/{id}](#Patient)                                 | Returns the details of a single patient                           |  N/A                   | Updates a patient                               | Deletes a patient                                        |
 | [/api/v1/donations/](#Donations_list)                                 | Returns a list of donations                           | Creates a new donation                  | N/A                               | N/A                                         |
+| [/api/v1/donations/{id}](#Donation)                                 | Returns the details of a single donation                           |  N/A                   | Updates a donation                               | Deletes a donation                                        |
 
 ### URIs_list
 
@@ -20,7 +19,7 @@
 
 Returns list of avalible URIs.
 
-### Patient_list
+### Patient_lists
 
 | URI                  | Method         |**GET**     |**POST** |
 | -------------------- |  ------------- |  --------- |-------- |
@@ -162,3 +161,13 @@ Example:
     "accept_donate": "True",
     "patient": 123
 }`
+
+### Patient
+
+| URI                  | Method         |**GET**     |**PUT** |**DELETE** |
+| -------------------- |  ------------- |  --------- |-------- | ----------|
+| `/api/v1/donations/{id}`  | Permission     | Users      | Admin/staff   | Admin/staff|
+
+> GET
+
+Returns detaiil information about Patient with all of his/her donations and medical employee responsible for register, also there is added dynamic field which returns information if the Patient can donate.
