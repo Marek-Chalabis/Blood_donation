@@ -56,15 +56,15 @@ Example:
 Adds new Patient (date_of_register and registered_by are done automatically)
 
 
-| Element / Attribute	 | Type         |
-| -------------------- |  ------------- |
-|  first_name  |  String    |
-|  last_name |   String   |
-|   pesel|   Integer(BigIntegerField)   |
-|   blood_group|   String(chocies: 0 Rh+, A Rh+, B Rh+, AB Rh+, 0 Rh-, A Rh-, B Rh-, B Rh-)   |
-|   gender|  String(chocies: male, female)    |
-|   email|   String(EmailField)   |
-|  phone_number |  Integer(PhoneNumberField)  *should start with Country calling code like: "+48"    |
+| Element / Attribute	 | Type         |Permission|
+| -------------------- |  ------------- |----------|
+|  first_name  |  String    |Required|
+|  last_name |   String   |Required|
+|   pesel|   Integer(BigIntegerField)   |Required|
+|   blood_group|   String(chocies: 0 Rh+, A Rh+, B Rh+, AB Rh+, 0 Rh-, A Rh-, B Rh-, B Rh-)   |Required|
+|   gender|  String(chocies: male, female)    |Required|
+|   email|   String(EmailField)   |Allowed|
+|  phone_number |  Integer(PhoneNumberField)  *should start with Country calling code like: "+48"*    |Allowed|SPRAWRDZ
 
 Example:
 
@@ -82,8 +82,30 @@ Example:
 
 | URI                  | Method         |**GET**     |**PUT** |**DELETE** |
 | -------------------- |  ------------- |  --------- |-------- | ----------|
-| `//api/v1/patients/{id}`  | Permission     | Users      | Users   | Admin/staff|
+| `/api/v1/patients/{id}`  | Permission     | Users      | Users   | Admin/staff|
 
 > GET
 
 Returns detaiil information about Patient with all of his/her donations and medical employee responsible for register, also there is added dynamic field which returns information if the Patient can donate.
+
+> PUT
+
+| Element / Attribute	 | Type         |Permission|
+| -------------------- |  ------------- |----------|
+|  first_name  |  String    |Required|
+|  last_name |   String   |Required|
+|   pesel|   Integer(BigIntegerField)   |Required|
+|   blood_group|   String(chocies: 0 Rh+, A Rh+, B Rh+, AB Rh+, 0 Rh-, A Rh-, B Rh-, B Rh-)   |Required|
+|   gender|  String(chocies: male, female)    |Required|
+|   email|   String(EmailField)   |Allowed|
+|  phone_number |  Integer(PhoneNumberField)  *should start with Country calling code like: "+48"*    |Allowed|
+
+Example:
+
+`{
+    "first_name": "ZMIANATestowy",
+    "last_name": "Testowicz",
+    "pesel": 12345678910,
+    "blood_group": "0 Rh+",
+    "gender": "male"
+}`
