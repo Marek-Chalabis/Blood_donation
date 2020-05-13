@@ -66,3 +66,15 @@ Adds new Patient (date_of_register and registered_by are done automatically)
 |   gender|  String(chocies: male, female)    |
 |   email|   String(EmailField)   |
 |  phone_number |  Integer(PhoneNumberField)  *should start with Country calling code like: "+48"    |
+
+Example:
+
+`{
+    "first_name": "Testowy",
+    "last_name": "Testowicz",
+    "pesel": 12345678910,
+    "blood_group": "0 Rh+",
+    "gender": "male",
+    "email": "test@vp.pl",
+    "phone_number": "+48123456789",
+}`
