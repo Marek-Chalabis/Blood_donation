@@ -90,7 +90,7 @@ Returns detaiil information about Patient with all of his/her donations and medi
 
 > PUT
 
-Update Patient.
+Updates Patient.
 
 | Element / Attribute	 | Type         |Permission|
 | -------------------- |  ------------- |----------|
@@ -114,4 +114,4 @@ Example:
 
 > DELETE
 
-Delete Patient(only admin or staff can do it).
+Deletes Patient(only admin or staff can do it).
