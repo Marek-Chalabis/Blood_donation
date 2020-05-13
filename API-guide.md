@@ -64,7 +64,7 @@ Adds new Patient (date_of_register and registered_by are done automatically)
 |   blood_group|   String(chocies: 0 Rh+, A Rh+, B Rh+, AB Rh+, 0 Rh-, A Rh-, B Rh-, B Rh-)   |Required|
 |   gender|  String(chocies: male, female)    |Required|
 |   email|   String(EmailField)   |Allowed|
-|  phone_number |  Integer(PhoneNumberField)  *should start with Country calling code like: "+48"*    |Allowed|SPRAWRDZ
+|  phone_number |  Integer(PhoneNumberField)  *should start with Country calling code like: "+48"*    |Allowed|
 
 Example:
 
@@ -89,6 +89,8 @@ Example:
 Returns detaiil information about Patient with all of his/her donations and medical employee responsible for register, also there is added dynamic field which returns information if the Patient can donate.
 
 > PUT
+
+Allows to update Patient.
 
 | Element / Attribute	 | Type         |Permission|
 | -------------------- |  ------------- |----------|
