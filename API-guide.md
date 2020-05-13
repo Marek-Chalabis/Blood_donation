@@ -90,7 +90,7 @@ Returns detaiil information about Patient with all of his/her donations and medi
 
 > PUT
 
-Allows to update Patient.
+Update Patient.
 
 | Element / Attribute	 | Type         |Permission|
 | -------------------- |  ------------- |----------|
@@ -111,3 +111,7 @@ Example:
     "blood_group": "0 Rh+",
     "gender": "male"
 }`
+
+> DELETE
+
+Delete Patient(only admin or staff can do it).
