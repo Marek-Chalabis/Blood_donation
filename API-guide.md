@@ -62,7 +62,7 @@ Adds new Patient (date_of_register and registered_by are done automatically)
 |  first_name  |  String    |Required|
 |  last_name |   String   |Required|
 |   pesel|   Integer(BigIntegerField)   |Required|
-|   blood_group|   String(chocies: 0 Rh+, A Rh+, B Rh+, AB Rh+, 0 Rh-, A Rh-, B Rh-, B Rh-)   |Required|
+|   blood_group|   String(chocies: 0 Rh+, A Rh+, B Rh+, AB Rh+, 0 Rh-, A Rh-, B Rh-, AB Rh-)   |Required|
 |   gender|  String(chocies: male, female)    |Required|
 |   email|   String(EmailField)   |Allowed|
 |  phone_number |  Integer(PhoneNumberField)  *should start with Country calling code like: "+48"*    |Allowed|
