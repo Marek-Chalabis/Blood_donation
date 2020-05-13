@@ -134,9 +134,38 @@ Returns list of Donations.
 | **medical_staff**         | in            | Django’s built-in lookup |
 | **patient**          | in          | Django’s built-in lookup |
 | **date_of_donation**            | exact, icontains, gt, gte, lt, lte, year, month, day          | Django’s built-in lookup |
-| **"accept_donate": **      | exact          | Django’s built-in lookup |
+| **accept_donate**      | exact          | Django’s built-in lookup |
 | **refuse_information**      | icontains          | Django’s built-in lookup |
 | **fields**      | Selective fields          | Returns only selected fields |
 | **omit**      | Selective fields          | Returns all fields except omitted ones |
 | **page**      | Pagination          | Returns page |
 | **page_size**      | Pagination          | Returns number of records on page (default=250, max_page_size=2000 |
+
+Example: 
+
+`/api/v1/donations/?medical_staff=32,54,534,56,33,77,23,43&accept_donate=true`
+
+> POST
+
+Adds new Donation (date_of_donation and medical_staff are done automatically)
+
+
+| Element / Attribute	 | Type         |Permission|
+| -------------------- |  ------------- |----------|
+|  medical_staff |   String   |Required|
+|   patient|   Integer(BigIntegerField)   |Required|
+|   date_of_donation|   String(chocies: 0 Rh+, A Rh+, B Rh+, AB Rh+, 0 Rh-, A Rh-, B Rh-, B Rh-)   |Required|
+|   accept_donate|  String(chocies: male, female)    |Required|
+|   refuse_information|   String(EmailField)   |Allowed|
+
+Example:
+
+`{
+    "first_name": "Testowy",
+    "last_name": "Testowicz",
+    "pesel": 12345678910,gfdffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+    "blood_group": "0 Rh+",
+    "gender": "male",
+    "email": "test@vp.pl",
+    "phone_number": "+48123456789",
+}`
