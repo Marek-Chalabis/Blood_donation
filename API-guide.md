@@ -41,6 +41,7 @@ Returns list of Patients with all of their donations and medical employee respon
 | **phone_number**      | exact, icontains          | Django’s built-in lookup |
 | **date_of_register**      | exact, icontains, gt, gte, lt, lte, year, month, day          | Django’s built-in lookup |
 | **can_donate**      | exact          | Django’s built-in lookup |
+| **registered_by**      | in          | Django’s built-in lookup |
 | **search**      | custom          | Search given value in: first_name, last_name, pesel, email, phone_number   |
 | **fields**      | Selective fields          | Returns only selected fields |
 | **omit**      | Selective fields          | Returns all fields except omitted ones |
