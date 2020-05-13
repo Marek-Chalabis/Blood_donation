@@ -7,14 +7,13 @@
 | ----------------------------------------------------- | --------------------------------------------------- | ------------------------------------- | --------------------------------- | ------------------------------------------- |
 | [/api/v1/](#URIs_list)                             | Returns a list of links to the other available URIs | N/A                                   | N/A                               | N/A                                         |
 | [/api/v1/patients/](#Patient_list)                                 | Returns a list of patients                           | Creates a new patient                  | N/A                               | N/A                                         |
-
+| [/api/v1/patients/{id}](#Patient)                                 | Returns the details of a single patient                           |  N/A                   | Updates a patient                               | Deletes a patient                                        |
 
 ### URIs_list
 
 | URI | Method   |**GET** |
 | --- |  ------- |  ------- |
 | `/api/v1/`  | Permission |All      |
-
 
 > GET
 
@@ -78,3 +77,13 @@ Example:
     "email": "test@vp.pl",
     "phone_number": "+48123456789",
 }`
+
+### Patient
+
+| URI                  | Method         |**GET**     |**PUT** |**DELETE** |
+| -------------------- |  ------------- |  --------- |-------- | ----------|
+| `//api/v1/patients/{id}`  | Permission     | Users      | Users   | Admin/staff|
+
+> GET
+
+Returns detaiil information about Patient with all of his/her donations and medical employee responsible for register, also there is added dynamic field which returns information if the Patient can donate.
