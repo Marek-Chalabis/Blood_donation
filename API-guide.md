@@ -152,20 +152,13 @@ Adds new Donation (date_of_donation and medical_staff are done automatically)
 
 | Element / Attribute	 | Type         |Permission|
 | -------------------- |  ------------- |----------|
-|  medical_staff |   String   |Required|
 |   patient|   Integer(BigIntegerField)   |Required|
-|   date_of_donation|   String(chocies: 0 Rh+, A Rh+, B Rh+, AB Rh+, 0 Rh-, A Rh-, B Rh-, B Rh-)   |Required|
 |   accept_donate|  String(chocies: male, female)    |Required|
 |   refuse_information|   String(EmailField)   |Allowed|
 
 Example:
 
 `{
-    "first_name": "Testowy",
-    "last_name": "Testowicz",
-    "pesel": 12345678910,gfdffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-    "blood_group": "0 Rh+",
-    "gender": "male",
-    "email": "test@vp.pl",
-    "phone_number": "+48123456789",
+    "accept_donate": "True",
+    "patient": 123
 }`
