@@ -51,3 +51,18 @@ Returns list of Patients with all of their donations and medical employee respon
 Example: 
 
 `/api/v1/patients/?page_size=100&can_donate=true&date_of_register__gte=1990-09-26&omit=registered_by&first_name__icontains=Vit`
+
+> POST
+
+Adds new Patient (date_of_register and registered_by are done automatically)
+
+
+| Element / Attribute	 | Type         |
+| -------------------- |  ------------- |
+|  first_name  |  String    |
+|  last_name |   String   |
+|   pesel|   Integer(BigIntegerField)   |
+|   blood_group|   String(chocies: 0 Rh+, A Rh+, B Rh+, AB Rh+, 0 Rh-, A Rh-, B Rh-, B Rh-)   |
+|   gender|  String(chocies: male, female)    |
+|   email|   String(EmailField)   |
+|  phone_number |  Integer(PhoneNumberField)  *should start with Country calling code like: "+48"    |
