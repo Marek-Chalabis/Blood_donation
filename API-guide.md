@@ -8,6 +8,7 @@
 | [/api/v1/](#URIs_list)                             | Returns a list of links to the other available URIs | N/A                                   | N/A                               | N/A                                         |
 | [/api/v1/patients/](#Patient_list)                                 | Returns a list of patients                           | Creates a new patient                  | N/A                               | N/A                                         |
 | [/api/v1/patients/{id}](#Patient)                                 | Returns the details of a single patient                           |  N/A                   | Updates a patient                               | Deletes a patient                                        |
+| [/api/v1/donations/](#Donations_list)                                 | Returns a list of donations                           | Creates a new donation                  | N/A                               | N/A                                         |
 
 ### URIs_list
 
@@ -42,7 +43,7 @@ Returns list of Patients with all of their donations and medical employee respon
 | **date_of_register**      | exact, icontains, gt, gte, lt, lte, year, month, day          | Django’s built-in lookup |
 | **can_donate**      | exact          | Django’s built-in lookup |
 | **registered_by**      | in          | Django’s built-in lookup |
-| **search**      | custom          | Search given value in: first_name, last_name, pesel, email, phone_number   |
+| **search**      | icontains          | Search given value in: first_name, last_name, pesel, email, phone_number   |
 | **fields**      | Selective fields          | Returns only selected fields |
 | **omit**      | Selective fields          | Returns all fields except omitted ones |
 | **page**      | Pagination          | Returns page |
@@ -116,3 +117,26 @@ Example:
 > DELETE
 
 Deletes Patient(only admin or staff can do it).
+
+### Donations_list
+
+| URI                  | Method         |**GET**     |**POST** |
+| -------------------- |  ------------- |  --------- |-------- |
+| `/api/v1/donations/`  | Permission     | Users      | Users   |
+
+> GET
+
+Returns list of Donations.
+
+| Filter                | lookups           | Description |
+| --------------------- | ---------------- | ----------- |
+| **id**                | in           | Django’s built-in lookup |
+| **medical_staff**         | in            | Django’s built-in lookup |
+| **patient**          | in          | Django’s built-in lookup |
+| **date_of_donation**            | exact, icontains, gt, gte, lt, lte, year, month, day          | Django’s built-in lookup |
+| **"accept_donate": **      | exact          | Django’s built-in lookup |
+| **refuse_information**      | icontains          | Django’s built-in lookup |
+| **fields**      | Selective fields          | Returns only selected fields |
+| **omit**      | Selective fields          | Returns all fields except omitted ones |
+| **page**      | Pagination          | Returns page |
+| **page_size**      | Pagination          | Returns number of records on page (default=250, max_page_size=2000 |
