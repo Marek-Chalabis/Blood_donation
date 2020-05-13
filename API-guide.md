@@ -115,7 +115,7 @@ Example:
 
 > DELETE
 
-Deletes Patient(only admin or staff can do it).
+Deletes Patient.
 
 ### Donations_list
 
@@ -189,3 +189,8 @@ Example:
     "patient": 123,
     "refuse_information": "Because I say so"
 }`
+
+> DELETE
+
+Deletes Donation.
+
