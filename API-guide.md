@@ -170,4 +170,22 @@ Example:
 
 > GET
 
-Returns detaiil information about Patient with all of his/her donations and medical employee responsible for register, also there is added dynamic field which returns information if the Patient can donate.
+Returns detaiil information about Donation, patient and medical employee.
+
+> PUT
+
+Updates Donation.
+
+| Element / Attribute	 | Type         |Permission|
+| -------------------- |  ------------- |----------|
+|   patient|   Integer(BigIntegerField)   |Required|
+|   accept_donate|  String(chocies: male, female)    |Required|
+|   refuse_information|   String(EmailField)   |Allowed|
+
+Example:
+
+`{
+    "accept_donate": "False",
+    "patient": 123,
+    "refuse_information": "Because I say so"
+}`
