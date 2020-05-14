@@ -11,7 +11,6 @@ router.register('public', PublicInfoViewSet, basename='public')
 
 
 urlpatterns = [
-    # view set robi aoutoatycznie url
     path('v1/', include(router.urls)),
     path('get-token', views.obtain_auth_token)
 ]
