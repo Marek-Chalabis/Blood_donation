@@ -1,5 +1,5 @@
 # Blood_donation(https://blood-dontaion.herokuapp.com/)
-> Web App for managing the blood donor database
+> Web App for managing the blood donor database with REST API
 
 ## Table of contents
 * [General info](#general-info)
@@ -14,7 +14,7 @@
   The project aimed to create a Web App enabling the management of blood banks in various departments. Medical staff can
 register donors, update them, see their detailed information and blood donation history. 
 People who are not logged in can check whether they can donate blood and information about the state of blood banks.
-The project has a program for creating a logical, unique database.
+The project has a program for creating a logical, unique database. 
 
 ## Login details
 Login as admin:
@@ -22,8 +22,8 @@ Login as admin:
 * password - admin
 
 Check donor status without login as employee(random examples)
-* PESEL: 33111890134, First_name: Bronisław, Last_name: Adamski
-* PESE: 47092577517, First_name: Tymur, Last_name: Czarnecki
+* PESEL: 70040598908, First_name: Marysia, Last_name: Adamczyk
+* PESE: 86110262453, First_name: Philip, Last_name: Andrzejewski
 
 All registered donors can be found on admin page( Info › Patients)(https://blood-dontaion.herokuapp.com/admin/)
 
@@ -37,6 +37,7 @@ All registered donors can be found on admin page( Info › Patients)(https://blo
 ## Technologies
 * Python - version 3.8.1
 * Django - version 3.05
+* Django REST framework - version 3.11
 * bootstrap - version 4.4.1
 * jquery - version 3.4.1
 * AWS S3
@@ -48,6 +49,7 @@ All registered donors can be found on admin page( Info › Patients)(https://blo
 
 ## Features
 List of features:
+* Fully functional REST API
 * optimized queries
 * information about the blood base and employees divided into individual departments
 * authorization system(login, logout, register, reset password, update) with secret key to prevent unauthorized people to login
