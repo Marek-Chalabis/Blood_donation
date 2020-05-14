@@ -1,5 +1,13 @@
-# IN PROGRESS THERE IS NO CODE IN REPO YET OR ONLINE !!!!!! release- 15,052020
-> IN PROGRESS !!!!!
+# REST API documentation
+>  All endpoints explained
+
+## Login
+
+Use API as admin:
+
+login: admin
+password: admin
+Token: d5c46c545a579513e88456bd8a85aee36e7a646f
 
 | URI                                              | GET                                                 | POST                                  | PUT                               | DELETE                                      |
 | ----------------------------------------------------- | --------------------------------------------------- | ------------------------------------- | --------------------------------- | ------------------------------------------- |
