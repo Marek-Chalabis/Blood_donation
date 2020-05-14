@@ -74,7 +74,7 @@ Example:
 
 Returns informations about user.
 
-### Patient_lists
+### Patients_list
 
 | URI                  | Method         |**GET**     |**POST** |
 | -------------------- |  ------------- |  --------- |-------- |
