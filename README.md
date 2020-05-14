@@ -16,7 +16,7 @@ register donors, update them, see their detailed information and blood donation 
 People who are not logged in can check whether they can donate blood and information about the state of blood banks.
 The project has a program for creating a logical, unique database. 
 
-<b>REST API</b> documentation -> [/API-guide.md](API-guide.md)
+<b>REST API</b> documentation -> [API-guide.md](API-guide.md)
 
 ## Login details
 Login as admin:
