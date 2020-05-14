@@ -7,6 +7,7 @@
 | [/api/v1/public/](#Public)                                 | Returns informations about current state of bloods in all branches                           | N/A                   | N/A                               | N/A                                         |
 | [/api/v1/public/{branch}](#Branch)                                 | Returns informations about current state of bloods in branch                           | N/A                   | N/A                               | N/A                                         |
 | [/api/v1/users/](#Users_list)                                 | Returns a list of users                           | N/A                   | N/A                               | N/A                                         |
+| [/api/v1/users/{id}](#User)                                 | Returns a user                           | N/A                   | N/A                               | N/A                                         |
 | [/api/v1/patients/](#Patients_list)                                 | Returns a list of patients                           | Creates a new patient                  | N/A                               | N/A                                         |
 | [/api/v1/patients/{id}](#Patient)                                 | Returns the details of a single patient                           |  N/A                   | Updates a patient                               | Deletes a patient                                        |
 | [/api/v1/donations/](#Donations_list)                                 | Returns a list of donations                           | Creates a new donation                  | N/A                               | N/A                                         |
@@ -39,7 +40,7 @@ Returns informations about current state of bloods in all branches.
 
 > GET
 
-Returns informations about current state of bloods in branch
+Returns informations about current state of bloods in branch.
 
 ### Users_list
 
@@ -63,9 +64,15 @@ Example:
 
 `/api/v1/users/?search=da`
 
+### User
 
+| URI | Method   |**GET** |
+| --- |  ------- |  ------- |
+| `/api/v1/users/{id}`  | Permission |Users      |
 
+> GET
 
+Returns informations about user.
 
 ### Patient_lists
 
