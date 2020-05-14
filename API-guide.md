@@ -6,6 +6,7 @@
 | [/api/v1/](#URIs_list)                             | Returns a list of links to the other available URIs | N/A                                   | N/A                               | N/A                                         |
 | [/api/v1/public/](#Public)                                 | Returns informations about current state of bloods in all branches                           | N/A                   | N/A                               | N/A                                         |
 | [/api/v1/public/{branch}](#Branch)                                 | Returns informations about current state of bloods in branch                           | N/A                   | N/A                               | N/A                                         |
+| [/api/get-token](#Token)                                 | N/A                            | Returns token for user                 | N/A                               | N/A                                         |
 | [/api/v1/users/](#Users_list)                                 | Returns a list of users                           | N/A                   | N/A                               | N/A                                         |
 | [/api/v1/users/{id}](#User)                                 | Returns a user                           | N/A                   | N/A                               | N/A                                         |
 | [/api/v1/patients/](#Patients_list)                                 | Returns a list of patients                           | Creates a new patient                  | N/A                               | N/A                                         |
@@ -41,6 +42,30 @@ Returns informations about current state of bloods in all branches.
 > GET
 
 Returns informations about current state of bloods in branch.
+
+
+### Token
+
+| URI | Method   |**POST** |
+| --- |  ------- |  ------- |
+| `/api/get-token`  | Permission |Users      |
+
+> POST
+
+Returns token for user.
+
+| Element / Attribute	 | Type         |Permission|
+| -------------------- |  ------------- |----------|
+|  username  |  String    |Required|
+|  password |   String   |Required|
+
+
+Example:
+
+`{
+    "username": "admin",
+    "password": "admin"
+}`
 
 ### Users_list
 
