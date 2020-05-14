@@ -4,6 +4,9 @@
 | URI                                              | GET                                                 | POST                                  | PUT                               | DELETE                                      |
 | ----------------------------------------------------- | --------------------------------------------------- | ------------------------------------- | --------------------------------- | ------------------------------------------- |
 | [/api/v1/](#URIs_list)                             | Returns a list of links to the other available URIs | N/A                                   | N/A                               | N/A                                         |
+
+| [/api/v1/public/](#Public)                                 | Returns informations about current state of bloods in all branches                           | N/A                   | N/A                               | N/A                                         |
+
 | [/api/v1/patients/](#Patients_list)                                 | Returns a list of patients                           | Creates a new patient                  | N/A                               | N/A                                         |
 | [/api/v1/patients/{id}](#Patient)                                 | Returns the details of a single patient                           |  N/A                   | Updates a patient                               | Deletes a patient                                        |
 | [/api/v1/donations/](#Donations_list)                                 | Returns a list of donations                           | Creates a new donation                  | N/A                               | N/A                                         |
@@ -18,6 +21,22 @@
 > GET
 
 Returns list of avalible URIs.
+
+### Public
+
+| URI | Method   |**GET** |
+| --- |  ------- |  ------- |
+| `/api/v1/public/`  | Permission |All      |
+
+> GET
+
+Returns informations about current state of bloods in all branches.
+
+
+
+
+
+
 
 ### Patient_lists
 
