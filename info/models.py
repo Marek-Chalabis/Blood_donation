@@ -1,5 +1,4 @@
 from django.db import models
-from django.core.validators import RegexValidator
 from django.utils import timezone
 from django.urls import reverse
 from django.contrib.auth.models import User
@@ -7,7 +6,9 @@ from phonenumber_field.modelfields import PhoneNumberField
 from datetime import date
 from django.core.exceptions import ValidationError
 from django.db.models.functions import Concat
-from django.db.models import Count, F, Value
+from django.db.models import F, Value
+from django.contrib.auth import get_user_model
+import datetime
 
 class Patient(models.Model):
     first_name = models.CharField(max_length=30)
@@ -20,8 +21,8 @@ class Patient(models.Model):
                                             ('B Rh-', 'B Rh-'), ('AB Rh-', 'AB Rh-')))
     email = models.EmailField(max_length=50, blank=True, null=True, unique=True)
     phone_number = PhoneNumberField(blank=False, default='+48', unique=True)
-    date_of_register = models.DateField(default=timezone.now)
-    medical_staff = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    date_of_register = models.DateField(default=datetime.date.today)
+    registered_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}({self.pesel})'
@@ -67,7 +68,7 @@ class Patient(models.Model):
         # checks if donor can donate
         last_donate = Patient.last_correct_donation(self)
 
-        if last_donate == None:
+        if last_donate is None:
             return 'Never donated'
         else:
             days_from_last_donate = (date.today() - last_donate).days
@@ -80,10 +81,10 @@ class Patient(models.Model):
         return Donation.objects.filter(patient=self).count() * 0.45
 
     def medical_worker_responsible_for_register(self):
-        full_repr_of_medical = Patient.objects.select_related('medical_staff', 'medical_staff__profile').get(id=self.id)
-        return f'{full_repr_of_medical.medical_staff.profile.position} ' \
-               f'{full_repr_of_medical.medical_staff.first_name} ' \
-               f'{full_repr_of_medical.medical_staff.last_name}'
+        full_repr_of_medical = Patient.objects.select_related('registered_by', 'registered_by__profile').get(id=self.id)
+        return f'{full_repr_of_medical.registered_by.profile.position} ' \
+               f'{full_repr_of_medical.registered_by.first_name} ' \
+               f'{full_repr_of_medical.registered_by.last_name}'
 
     def history_of_donation(self):
         # history of donations
@@ -98,7 +99,7 @@ class Patient(models.Model):
 class Donation(models.Model):
     medical_staff = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     patient = models.ForeignKey(Patient, on_delete=models.PROTECT)
-    date_of_donation = models.DateField(default=timezone.now)
+    date_of_donation = models.DateField(default=datetime.date.today)
     accept_donate = models.BooleanField()
     refuse_information = models.TextField(null=True, blank=True)
 

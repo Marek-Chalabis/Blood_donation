@@ -1,62 +1,102 @@
-from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
-from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .filters import PatientFilter
-from .models import Patient, Donation
 from django.contrib.auth.models import User
-from .forms import PatientForm, DonationForm, InfoForDonor, UpdatePatientForm
-from django.db.models import Count, F, Value, Max, Case, When, CharField, ExpressionWrapper, Q
-from users.models import Profile
-from django.db.models.functions import Concat
-from django.views.decorators.cache import cache_page
+from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import Count, Max, Q
+from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from users.models import Profile
+from .filters import PatientFilter
+from .forms import PatientForm, DonationForm, InfoForDonor, UpdatePatientForm
+from .models import Patient, Donation
+
+
 # =========================== VIEWS FOR EVERYONE ============================
+
+class BloodInformation:
+    blood_groups = {'0 Rh+', 'A Rh+', 'B Rh+', 'AB Rh+', '0 Rh-', 'A Rh-', 'B Rh-', 'AB Rh-'}
+    branches = Profile.objects.values_list('branch', flat=True).distinct()
+
+    @staticmethod
+    def set_of_bloods(branch=None):
+        """ returns sorted set of (blood_group, number of donations with this blood_group)"""
+
+        if branch is None:
+            blood = set(Donation.objects.select_related('patient', 'medical_staff').values_list('patient__blood_group')
+                .annotate(
+                total=Count('id', filter=Q(accept_donate=True, medical_staff__is_staff=False))))
+        else:
+            blood = set(Donation.objects.select_related(
+                'patient', 'medical_staff', 'medical_staff__profile')
+                .values_list('patient__blood_group').annotate(
+                total=Count('id', filter=Q(accept_donate=True, medical_staff__is_staff=False,
+                                           medical_staff__profile__branch=branch))))
+
+        # checks if there is a blood that don't appear in blood groups
+        if len(BloodInformation.blood_groups) != len(blood):
+            # checks what type of blood is missing
+            current_list_of_bloods = {blood_type for (blood_type, _) in blood}
+            missing_bloods = BloodInformation.blood_groups.difference(current_list_of_bloods)
+            # adds it to base set
+            for missing_blood in missing_bloods:
+                blood.add((missing_blood, 0))
+
+        return sorted(blood, key=lambda x: x[1])
+
+    @staticmethod
+    def percentage_of_blood_group(set_bloods, branch=None):
+        """ return dictionary with % of blood group(blood_group: number)"""
+
+        # number of correct donations
+        if branch is None:
+            current_blood_donations = Donation.objects.filter(accept_donate=True).count()
+        else:
+            current_blood_donations = Donation.objects.select_related('medical_staff__profile').filter(
+                accept_donate=True, medical_staff__profile__branch=branch).count()
+
+        return {blood_group: round((number_of_donations * 100) / current_blood_donations, 2)
+                for (blood_group, number_of_donations) in set_bloods}
+
+    @staticmethod
+    def blood_state(bloods):
+        """ random logic behind blood status"""
+        return {key: (100 if value * 8 > 100 else value * 8) for (key, value) in bloods.items()}
 
 
 def info_main(request):
-    available_cities = User.objects.values_list('profile__branch', flat=True).distinct()
-    current_blood_status = Donation.objects.filter(accept_donate=True).count()
-    current_blood_status_for_blood = current_blood_status / 8
-    blood = Patient.objects.values_list('blood_group').filter(donation__accept_donate=True)\
-        .annotate(total=Count('donation')).order_by('total')
+    blood = BloodInformation.set_of_bloods()
+    percentage_blood_share = BloodInformation.percentage_of_blood_group(blood)
+    state_of_blood_supply = BloodInformation.blood_state(percentage_blood_share)
 
     context = {
         # just to add some logic into view
-        'blood_all': {blood_tuple[0]: round((blood_tuple[1] * 100) / current_blood_status, 2) for blood_tuple in blood},
-        'bloods':  {blood_tuple[0]: round((blood_tuple[1] * 100) / current_blood_status_for_blood, 2)
-                    for blood_tuple in blood},
-        'cities': available_cities
+        'blood_all': percentage_blood_share,
+        'bloods': state_of_blood_supply,
+        'cities': BloodInformation.branches
     }
     return render(request, 'main_info.html', context)
 
 
 def info_branch(request, branch):
-    context = {'branch': branch}
-    # remove actual branch from cities
-    available_cities = list(User.objects.values_list('profile__branch', flat=True).distinct())
+    blood = BloodInformation.set_of_bloods(branch)
+    percentage_blood_share = BloodInformation.percentage_of_blood_group(blood, branch)
+    state_of_blood_supply = BloodInformation.blood_state(percentage_blood_share)
+
+    available_cities = list(BloodInformation.branches)
     available_cities.remove(branch)
 
-    current_blood_status = Donation.objects.filter(
-        accept_donate=True, medical_staff__profile__branch=branch, medical_staff__is_staff=False).count()
+    staff = Profile.objects.select_related('user').filter(branch=branch, user__is_staff=False).all()
 
-    current_blood_status_for_blood = current_blood_status / 8
-
-    blood = Patient.objects.values_list('blood_group').filter(
-        donation__accept_donate=True, medical_staff__profile__branch=branch, medical_staff__is_staff=False)\
-        .annotate(total=Count('donation')).order_by('total')
-
-    staff = Profile.objects.filter(branch=branch, user__is_staff=False).select_related('user').all()
-
-    # just to add some logic into view
-    context['blood_all'] = {blood_tuple[0]: round((blood_tuple[1] * 100)
-                                                  / current_blood_status, 2) for blood_tuple in blood}
-    context['bloods'] = {blood_tuple[0]: round((blood_tuple[1] * 100)
-                                               / current_blood_status_for_blood, 2) for blood_tuple in blood}
-    context['cities'] = available_cities
-    context['staff'] = staff
+    context = {
+        'branch': branch,
+        'blood_all': percentage_blood_share,
+        'bloods': state_of_blood_supply,
+        'cities': available_cities,
+        'staff': staff
+    }
     return render(request, 'branch_info.html', context)
 
 
@@ -131,7 +171,7 @@ def blood_donation(request, donor_id):
 @method_decorator(cache_page(60 * 60), name='dispatch')
 class PatientListView(ListView):
     # adds dates of last correct donation
-    queryset = Patient.objects\
+    queryset = Patient.objects \
         .annotate(last_correct_donation=Max('donation__date_of_donation', filter=Q(donation__accept_donate=True)))
     template_name = 'Patient/patient.html'
     ordering = ['last_name', 'first_name']
@@ -167,7 +207,7 @@ class PatientCreateView(LoginRequiredMixin, CreateView):
     success_message = "Donor was registered successfully"
 
     def form_valid(self, form):
-        form.instance.medical_staff = self.request.user
+        form.instance.registered_by = self.request.user
         return super().form_valid(form)
 
 

@@ -13,7 +13,7 @@ class PatientForm(ModelForm):
     class Meta:
         model = Patient
         fields = '__all__'
-        exclude = ['date_of_register', 'medical_staff']
+        exclude = ['date_of_register', 'registered_by']
 
 
 class DonationForm(ModelForm):
@@ -35,4 +35,4 @@ class UpdatePatientForm(ModelForm):
     class Meta:
         model = Patient
         fields = '__all__'
-        exclude = ['medical_staff']
+        exclude = ['registered_by', 'date_of_register']

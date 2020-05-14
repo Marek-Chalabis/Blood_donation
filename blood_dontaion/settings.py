@@ -32,6 +32,9 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
     'localflavor',
     'debug_toolbar',
+    'rest_framework',
+    'api',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -142,6 +145,21 @@ CACHES = {
         'LOCATION': 'cache_table'  # DB table for caches
     }
 }
+# REST
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '200/day',
+        'user': '200/hour'
+    }
+}
+
 
 # ADDS FOR APPS
 # bootstrap - updated visuals
@@ -152,9 +170,9 @@ INTERNAL_IPS = [
 ]
 # True to unable toolbar
 DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': lambda r: False,  # disables it
-    # '...
+    'SHOW_TOOLBAR_CALLBACK': lambda r: True,  # disables it
 }
+
 
 # # AMAZON S3 (keep static files there uncomment if you want)
 # # COMMENT SAVE METHOD IN USERS -> MODELS PROFILE -> SAVE()
