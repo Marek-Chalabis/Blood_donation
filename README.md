@@ -1,6 +1,5 @@
 # Blood_donation(https://blood-dontaion.herokuapp.com/)
 > Web App for managing the blood donor database with REST API
-[/API-guide.md](API-guide.md)
 
 ## Table of contents
 * [General info](#general-info)
@@ -16,6 +15,8 @@
 register donors, update them, see their detailed information and blood donation history. 
 People who are not logged in can check whether they can donate blood and information about the state of blood banks.
 The project has a program for creating a logical, unique database. 
+
+REST API documentation -> [/API-guide.md](API-guide.md)
 
 ## Login details
 Login as admin:
