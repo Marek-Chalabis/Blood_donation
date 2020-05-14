@@ -5,11 +5,11 @@
 | ----------------------------------------------------- | --------------------------------------------------- | ------------------------------------- | --------------------------------- | ------------------------------------------- |
 | [/api/v1/](#URIs_list)                             | Returns a list of links to the other available URIs | N/A                                   | N/A                               | N/A                                         |
 | [/api/v1/public/](#Public)                                 | Returns informations about current state of bloods in all branches                           | N/A                   | N/A                               | N/A                                         |
+| [/api/v1/public/{branch}](#Branch)                                 | Returns informations about current state of bloods in branch branches                           | N/A                   | N/A                               | N/A                                         |
 | [/api/v1/patients/](#Patients_list)                                 | Returns a list of patients                           | Creates a new patient                  | N/A                               | N/A                                         |
 | [/api/v1/patients/{id}](#Patient)                                 | Returns the details of a single patient                           |  N/A                   | Updates a patient                               | Deletes a patient                                        |
 | [/api/v1/donations/](#Donations_list)                                 | Returns a list of donations                           | Creates a new donation                  | N/A                               | N/A                                         |
 | [/api/v1/donations/{id}](#Donation)                                 | Returns the details of a single donation                           |  N/A                   | Updates a donation                               | Deletes a donation                                        |
-
 ### URIs_list
 
 | URI | Method   |**GET** |
@@ -30,11 +30,15 @@ Returns list of avalible URIs.
 
 Returns informations about current state of bloods in all branches.
 
+### Branch
 
+| URI | Method   |**GET** |
+| --- |  ------- |  ------- |
+| `/api/v1/public/{branch}`  | Permission |All      |
 
+> GET
 
-
-
+Returns informations about current state of bloods in branch
 
 ### Patient_lists
 
