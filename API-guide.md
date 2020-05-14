@@ -5,7 +5,8 @@
 | ----------------------------------------------------- | --------------------------------------------------- | ------------------------------------- | --------------------------------- | ------------------------------------------- |
 | [/api/v1/](#URIs_list)                             | Returns a list of links to the other available URIs | N/A                                   | N/A                               | N/A                                         |
 | [/api/v1/public/](#Public)                                 | Returns informations about current state of bloods in all branches                           | N/A                   | N/A                               | N/A                                         |
-| [/api/v1/public/{branch}](#Branch)                                 | Returns informations about current state of bloods in branch branches                           | N/A                   | N/A                               | N/A                                         |
+| [/api/v1/public/{branch}](#Branch)                                 | Returns informations about current state of bloods in branch                           | N/A                   | N/A                               | N/A                                         |
+| [/api/v1/users/](#Users_list)                                 | Returns a list of users                           | N/A                   | N/A                               | N/A                                         |
 | [/api/v1/patients/](#Patients_list)                                 | Returns a list of patients                           | Creates a new patient                  | N/A                               | N/A                                         |
 | [/api/v1/patients/{id}](#Patient)                                 | Returns the details of a single patient                           |  N/A                   | Updates a patient                               | Deletes a patient                                        |
 | [/api/v1/donations/](#Donations_list)                                 | Returns a list of donations                           | Creates a new donation                  | N/A                               | N/A                                         |
@@ -39,6 +40,32 @@ Returns informations about current state of bloods in all branches.
 > GET
 
 Returns informations about current state of bloods in branch
+
+### Users_list
+
+| URI                  | Method         |**GET**     |
+| -------------------- |  ------------- |  --------- |
+| `/api/v1/users/`  | Permission     | Users      | 
+
+> GET
+
+Returns list of users with branch, position and image.
+
+| Filter                | lookups           | Description |
+| --------------------- | ---------------- | ----------- |
+| **search**                | SearchFilter           | Search given value in: username, last_name, email, position, branch  |
+| **fields**      | Selective fields          | Returns only selected fields |
+| **omit**      | Selective fields          | Returns all fields except omitted ones |
+| **page**      | Pagination          | Returns page |
+| **page_size**      | Pagination          | Returns number of records on page (default=50, max_page_size=500 |
+
+Example: 
+
+`/api/v1/users/?search=da`
+
+
+
+
 
 ### Patient_lists
 
