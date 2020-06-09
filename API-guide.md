@@ -132,6 +132,32 @@ Returns token for user.
 
 ### Users_list
 
+#### Single example: 
+
+```
+{
+            "id": 1,
+            "username": "ttpnzpgwut",
+            "first_name": "Wera",
+            "last_name": "Kucharska",
+            "email": "iyv@mail1st.com",
+            "position": "habilitated doctor",
+            "branch": "Lublin",
+            "image": "https://blood-donation-live.s3.eu-west-2.amazonaws.com/profile_image/ttpnzpgwut.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVGRKEV6O54SLRAVI%2F20200609%2Feu-west-2%2Fs3%2Faws4_request&X-Amz-Date=20200609T125155Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=e130336bd1547836ed8d32cbee931f5d3391805856db169639c9db2c05b91e82"
+        },
+        {
+            "id": 2,
+            "username": "atxl",
+            "first_name": "Blanca",
+            "last_name": "Chmielewska",
+            "email": "luwvdgyqsjb@coolsend.com",
+            "position": "medical specialist",
+            "branch": "Warszawa",
+            "image": "https://blood-donation-live.s3.eu-west-2.amazonaws.com/profile_image/atxl.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVGRKEV6O54SLRAVI%2F20200609%2Feu-west-2%2Fs3%2Faws4_request&X-Amz-Date=20200609T125155Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=ca9170745638071db207476990086b5a3f439a565c27fea1cb67282f13e65a0e"
+        },
+        ...
+```
+
 | URI                  | Method         |**GET**     |
 | -------------------- |  ------------- |  --------- |
 | `/api/v1/users/`  | Permission     | Users      | 
@@ -148,11 +174,22 @@ Returns list of users with branch, position and image.
 | **page**      | Pagination          | Returns page |
 | **page_size**      | Pagination          | Returns number of records on page (default=50, max_page_size=500 |
 
-Example: 
-
-`/api/v1/users/?search=da`
-
 ### User
+
+#### Single example:
+
+```
+{
+    "id": 12,
+    "username": "c",
+    "first_name": "Amine",
+    "last_name": "Rutkowski",
+    "email": "dtzfawwbd@123mail.cl",
+    "position": "habilitated doctor",
+    "branch": "Radom",
+    "image": "https://blood-donation-live.s3.eu-west-2.amazonaws.com/profile_image/c.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVGRKEV6O54SLRAVI%2F20200609%2Feu-west-2%2Fs3%2Faws4_request&X-Amz-Date=20200609T125348Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=c5fdf899436a2e178ed70742d1b7c81929e445a333bd8a22afdf57ee17873919"
+}
+```
 
 | URI | Method   |**GET** |
 | --- |  ------- |  ------- |
