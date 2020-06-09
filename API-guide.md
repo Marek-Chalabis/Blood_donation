@@ -109,6 +109,14 @@ Returns informations about current state of bloods in branch.
 
 ### Token
 
+#### Single example: 
+
+```
+{
+    "token": "dee9a966e4fe39abf1e59b9e950d28632e4454f6"
+}
+```
+
 | URI | Method   |**POST** |
 | --- |  ------- |  ------- |
 | `/api/get-token`  | Permission |Users      |
@@ -121,14 +129,6 @@ Returns token for user.
 | -------------------- |  ------------- |----------|
 |  username  |  String    |Required|
 |  password |   String   |Required|
-
-
-Example:
-
-`{
-    "username": "admin",
-    "password": "admin"
-}`
 
 ### Users_list
 
