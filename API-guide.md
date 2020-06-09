@@ -27,6 +27,17 @@ Token: d5c46c545a579513e88456bd8a85aee36e7a646f
 | [/api/v1/donations/{id}](#Donation)                                 | Returns the details of a single donation                           |  N/A                   | Updates a donation                               | Deletes a donation                                        |
 ### URIs_list
 
+#### Single example: 
+
+```
+{
+    "patients": "https://blood-dontaion.herokuapp.com/api/v1/patients/",
+    "donations": "https://blood-dontaion.herokuapp.com/api/v1/donations/",
+    "users": "https://blood-dontaion.herokuapp.com/api/v1/users/",
+    "public": "https://blood-dontaion.herokuapp.com/api/v1/public/"
+}
+```
+
 | URI | Method   |**GET** |
 | --- |  ------- |  ------- |
 | `/api/v1/`  | Permission |All      |
@@ -37,6 +48,28 @@ Returns list of avalible URIs.
 
 ### Public
 
+#### Single example: 
+
+```
+{
+    "Branches": [
+        "Lublin",
+        ...
+        "Radom"
+    ],
+    "percentage_blood_share": {
+        "A Rh+": 32.37,
+        ...
+        "B Rh-": 1.47
+    },
+    "state_of_blood_supply": {
+        "A Rh+": 100,
+        ...
+        "B Rh-": 11.76
+    }
+}
+```
+
 | URI | Method   |**GET** |
 | --- |  ------- |  ------- |
 | `/api/v1/public/`  | Permission |All      |
@@ -46,6 +79,24 @@ Returns list of avalible URIs.
 Returns informations about current state of bloods in all branches.
 
 ### Branch
+
+#### Single example: 
+
+```
+{
+    "Branch": "Lublin",
+    "percentage_blood_share": {
+        "A Rh+": 34.69,
+        ...
+        "B Rh-": 0.86
+    },
+    "state_of_blood_supply": {
+        "A Rh+": 100,
+        ...
+        "B Rh-": 6.88
+    }
+}
+```
 
 | URI | Method   |**GET** |
 | --- |  ------- |  ------- |
