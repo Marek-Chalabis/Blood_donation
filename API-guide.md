@@ -157,13 +157,36 @@ Returns informations about user.
 
 ```
 {
-    "first_name": "Testowy",
-    "last_name": "Testowicz",
-    "pesel": 12345678910,
+    "id": 32,
+    "first_name": "Tatiana",
+    "last_name": "Michalak",
+    "pesel": 80122570223,
     "blood_group": "0 Rh+",
-    "gender": "male",
-    "email": "test@vp.pl",
-    "phone_number": "+48123456789",
+    "gender": "female",
+    "email": "ff@caltanet.it",
+    "phone_number": "+48774526954",
+    "date_of_register": "1998-12-26",
+    "registered_by": {
+        "id": 17,
+        "username": "eciw",
+        "first_name": "Lara",
+        "last_name": "Michalska",
+        "email": "bguyleiy@mailchoose.co",
+        "position": "habilitated doctor",
+        "branch": "Radom",
+        "image": "https://blood-donation-live.s3.eu-west-2.amazonaws.com/profile_image/eciw.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVGRKEV6O54SLRAVI%2F20200610%2Feu-west-2%2Fs3%2Faws4_request&X-Amz-Date=20200610T093658Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=806ab15b536c2bf0129e3d153c2fe52adc72969207dc9269e566bd53044bbe6b"
+    },
+    "can_donate": false,
+    "donation_set": [
+        {
+            "id": 1117,
+            "date_of_donation": "1998-12-26",
+            "accept_donate": true,
+            "refuse_information": null,
+            "medical_staff": 5
+        },
+        ...
+    ]
 }
 ````
 
