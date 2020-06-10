@@ -107,28 +107,6 @@ Returns informations about current state of bloods in all branches.
 
 Returns informations about current state of bloods in branch.
 
-
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1production
-### Users
-
-
-| URI                  | Method         |**GET**     |
-| -------------------- |  ------------- |  --------- |
-| `/api/v1/users/`  | Permission     | Users      | 
-
-> GET
-
-Returns list of users with branch and image.
-
-| URI | Method   |**GET** |
-| --- |  ------- |  ------- |
-| `/api/v1/users/{id}`  | Permission |Users      |
-
-> GET
-
-Returns informations about user with branch and image.
-
 ### Users
 
 #### Single example: 
