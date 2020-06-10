@@ -18,7 +18,7 @@ Token: d5c46c545a579513e88456bd8a85aee36e7a646f
 | [/api/v1/](#URIs_list)                             | Returns a list of links to the other available URIs | N/A                                   | N/A                               | N/A                                         |
 | [/api/get-token](#Token)                                 | N/A                            | Returns token for user                 | N/A                               | N/A                                         |
 | [/api/v1/public/](#Public)                                 | Returns informations about current state of bloods in all branches                           | N/A                   | N/A                               | N/A                                         |
-| [/api/v1/public/{branch}](#Branch)                                 | Returns informations about current state of bloods in branch                           | N/A                   | N/A                               | N/A                                         |
+| [/api/v1/public/{branch}](#Public)                                 | Returns informations about current state of bloods in branch                           | N/A                   | N/A                               | N/A                                         |
 | [/api/v1/users/](#Users_list)                                 | Returns a list of users                           | N/A                   | N/A                               | N/A                                         |
 | [/api/v1/users/{id}](#User)                                 | Returns a user                           | N/A                   | N/A                               | N/A                                         |
 | [/api/v1/patients/](#Patients_list)                                 | Returns a list of patients                           | Creates a new patient                  | N/A                               | N/A                                         |
@@ -71,45 +71,12 @@ Returns list of avalible URIs.
 
 Returns token for user.
 
-| Element / Attribute	 | Type         |Permission|
-| -------------------- |  ------------- |----------|
-|  username  |  String    |Required|
-|  password |   String   |Required|
+
+
+
 
 
 ### Public
-
-#### Single example: 
-
-```
-{
-    "Branches": [
-        "Lublin",
-        ...
-        "Radom"
-    ],
-    "percentage_blood_share": {
-        "A Rh+": 32.37,
-        ...
-        "B Rh-": 1.47
-    },
-    "state_of_blood_supply": {
-        "A Rh+": 100,
-        ...
-        "B Rh-": 11.76
-    }
-}
-```
-
-| URI | Method   |**GET** |
-| --- |  ------- |  ------- |
-| `/api/v1/public/`  | Permission |All      |
-
-> GET
-
-Returns informations about current state of bloods in all branches.
-
-### Branch
 
 #### Single example: 
 
@@ -131,11 +98,21 @@ Returns informations about current state of bloods in all branches.
 
 | URI | Method   |**GET** |
 | --- |  ------- |  ------- |
+| `/api/v1/public/`  | Permission |All      |
+
+> GET
+
+Returns informations about current state of bloods in all branches.
+
+| URI | Method   |**GET** |
+| --- |  ------- |  ------- |
 | `/api/v1/public/{branch}`  | Permission |All      |
 
 > GET
 
 Returns informations about current state of bloods in branch.
+
+
 
 
 
