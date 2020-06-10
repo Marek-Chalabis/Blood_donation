@@ -23,8 +23,8 @@ Token: d5c46c545a579513e88456bd8a85aee36e7a646f
 | [/api/v1/users/{id}](#Users)                                 | Returns a user                           | N/A                   | N/A                               | N/A                                         |
 | [/api/v1/patients/](#Patients)                                 | Returns a list of patients                           | Creates a new patient                  | N/A                               | N/A                                         |
 | [/api/v1/patients/{id}](#Patients)                                 | Returns the details of a single patient                           |  N/A                   | Updates a patient                               | Deletes a patient                                        |
-| [/api/v1/donations/](#Donations_list)                                 | Returns a list of donations                           | Creates a new donation                  | N/A                               | N/A                                         |
-| [/api/v1/donations/{id}](#Donation)                                 | Returns the details of a single donation                           |  N/A                   | Updates a donation                               | Deletes a donation                                        |
+| [/api/v1/donations/](#Donations)                                 | Returns a list of donations                           | Creates a new donation                  | N/A                               | N/A                                         |
+| [/api/v1/donations/{id}](#Donations)                                 | Returns the details of a single donation                           |  N/A                   | Updates a donation                               | Deletes a donation                                        |
 ### URIs_list
 
 #### Single example: 
@@ -255,31 +255,63 @@ Updates Patient.
 
 Deletes Patient.
 
+### Donations
+
+#### Single example: 
+
+```
+{
+    "medical_staff": {
+        "id": 66,
+        "username": "qv",
+        "first_name": "Daniil",
+        "last_name": "Malinowski",
+        "email": "txum@mail2norway.com",
+        "position": "doctor",
+        "branch": "Warszawa",
+        "image": "https://blood-donation-live.s3.eu-west-2.amazonaws.com/profile_image/qv.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVGRKEV6O54SLRAVI%2F20200610%2Feu-west-2%2Fs3%2Faws4_request&X-Amz-Date=20200610T094219Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=0a8181aa95dc65351f5b8fcd1c41d993a5e6b77a28f8761b2640ce3f03fd03f1"
+    },
+    "patient": {
+        "id": 906,
+        "first_name": "Tuankiet",
+        "last_name": "Stępień",
+        "blood_group": "0 Rh+",
+        "phone_number": "+48869751946",
+        "registered_by": 30
+    },
+    "date_of_donation": "1948-11-25",
+    "accept_donate": true,
+    "refuse_information": null
+}
+````
+
+#### Permissible Fields
+
+| Element / Attribute     | PUT       | POST      |
+| ----------------------- | --------- | --------- |
+| **id**                    | Forbidden  |  Forbidden|
+| **medical_staff**                    | Forbidden  |  Forbidden|
+| **patient**              | Required   |  Required |
+| **date_of_donation**          | Forbidden   |  Forbidden |
+| **accept_donate**             | Required   | Required  |
+| **refuse_information**              | Allowed   |  Allowed |
 
 
 
+#### Sortable Fields
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### Donations_list
+| Filter                | Type | lookups           | Description |
+| --------------------- | --|---------------- | ----------- |
+| **id**                | Integer   |    in    |Django’s built-in lookup  |
+| **medical_staff**                | Integer   |    exact    |Django’s built-in lookup  |
+| **patient**                | Integer   |    exac    |Django’s built-in lookup  |
+| **date_of_donation**                | Date    |    exact, icontains, gt, gte, lt, lte, year, month, day    |Django’s built-in lookup |
+| **accept_donate**                | BooleanField    |    exact     |Django’s built-in lookup  |
+| **refuse_information**                | String   |    icontains    |Django’s built-in lookup  |
+| **fields**      | String|Selective fields          | Returns only selected fields |
+| **omit**      |String |Selective fields          | Returns all fields except omitted ones |
+| **page**      | Integer|Pagination          | Returns page |
+| **page_size**      | Integer|Pagination          | Returns number of records on page (default=250, max_page_size=2000 |
 
 | URI                  | Method         |**GET**     |**POST** |
 | -------------------- |  ------------- |  --------- |-------- |
@@ -289,64 +321,9 @@ Deletes Patient.
 
 Returns list of Donations.
 
-| Filter                | lookups           | Description |
-| --------------------- | ---------------- | ----------- |
-| **id**                | in           | Django’s built-in lookup |
-| **medical_staff**         | in            | Django’s built-in lookup |
-| **patient**          | in          | Django’s built-in lookup |
-| **date_of_donation**            | exact, icontains, gt, gte, lt, lte, year, month, day          | Django’s built-in lookup |
-| **accept_donate**      | exact          | Django’s built-in lookup |
-| **refuse_information**      | icontains          | Django’s built-in lookup |
-| **fields**      | Selective fields          | Returns only selected fields |
-| **omit**      | Selective fields          | Returns all fields except omitted ones |
-| **page**      | Pagination          | Returns page |
-| **page_size**      | Pagination          | Returns number of records on page (default=250, max_page_size=2000 |
-
-
-
 > POST
 
 Adds new Donation (date_of_donation and medical_staff are done automatically)
-
-
-| Element / Attribute	 | Type         |Permission|
-| -------------------- |  ------------- |----------|
-|   patient|   Integer(BigIntegerField)   |Required|
-|   accept_donate|  String(chocies: male, female)    |Required|
-|   refuse_information|   String(EmailField)   |Allowed|
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### Donation
 
 | URI                  | Method         |**GET**     |**PUT** |**DELETE** |
 | -------------------- |  ------------- |  --------- |-------- | ----------|
@@ -359,20 +336,6 @@ Returns detaiil information about Donation, patient and medical employee.
 > PUT
 
 Updates Donation.
-
-| Element / Attribute	 | Type         |Permission|
-| -------------------- |  ------------- |----------|
-|   patient|   Integer(BigIntegerField)   |Required|
-|   accept_donate|  String(chocies: male, female)    |Required|
-|   refuse_information|   String(EmailField)   |Allowed|
-
-Example:
-
-`{
-    "accept_donate": "False",
-    "patient": 123,
-    "refuse_information": "Because I say so"
-}`
 
 > DELETE
 
