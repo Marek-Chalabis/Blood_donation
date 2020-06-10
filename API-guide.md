@@ -16,9 +16,9 @@ Token: d5c46c545a579513e88456bd8a85aee36e7a646f
 | URI                                              | GET                                                 | POST                                  | PUT                               | DELETE                                      |
 | ----------------------------------------------------- | --------------------------------------------------- | ------------------------------------- | --------------------------------- | ------------------------------------------- |
 | [/api/v1/](#URIs_list)                             | Returns a list of links to the other available URIs | N/A                                   | N/A                               | N/A                                         |
+| [/api/get-token](#Token)                                 | N/A                            | Returns token for user                 | N/A                               | N/A                                         |
 | [/api/v1/public/](#Public)                                 | Returns informations about current state of bloods in all branches                           | N/A                   | N/A                               | N/A                                         |
 | [/api/v1/public/{branch}](#Branch)                                 | Returns informations about current state of bloods in branch                           | N/A                   | N/A                               | N/A                                         |
-| [/api/get-token](#Token)                                 | N/A                            | Returns token for user                 | N/A                               | N/A                                         |
 | [/api/v1/users/](#Users_list)                                 | Returns a list of users                           | N/A                   | N/A                               | N/A                                         |
 | [/api/v1/users/{id}](#User)                                 | Returns a user                           | N/A                   | N/A                               | N/A                                         |
 | [/api/v1/patients/](#Patients_list)                                 | Returns a list of patients                           | Creates a new patient                  | N/A                               | N/A                                         |
@@ -45,6 +45,37 @@ Token: d5c46c545a579513e88456bd8a85aee36e7a646f
 > GET
 
 Returns list of avalible URIs.
+
+### Token
+
+#### Single example: 
+
+```
+{
+    "token": "dee9a966e4fe39abf1e59b9e950d28632e4454f6"
+}
+```
+
+#### Permissible Fields
+
+| Element / Attribute     | POST       |  
+| ----------------------- | --------- | 
+| **username**                    | Required  | 
+| **password**              | Required   |
+
+| URI | Method   |**POST** |
+| --- |  ------- |  ------- |
+| `/api/get-token`  | Permission |All      |
+
+> POST
+
+Returns token for user.
+
+| Element / Attribute	 | Type         |Permission|
+| -------------------- |  ------------- |----------|
+|  username  |  String    |Required|
+|  password |   String   |Required|
+
 
 ### Public
 
@@ -107,28 +138,7 @@ Returns informations about current state of bloods in all branches.
 Returns informations about current state of bloods in branch.
 
 
-### Token
 
-#### Single example: 
-
-```
-{
-    "token": "dee9a966e4fe39abf1e59b9e950d28632e4454f6"
-}
-```
-
-| URI | Method   |**POST** |
-| --- |  ------- |  ------- |
-| `/api/get-token`  | Permission |Users      |
-
-> POST
-
-Returns token for user.
-
-| Element / Attribute	 | Type         |Permission|
-| -------------------- |  ------------- |----------|
-|  username  |  String    |Required|
-|  password |   String   |Required|
 
 ### Users_list
 
