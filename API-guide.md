@@ -19,8 +19,8 @@ Token: d5c46c545a579513e88456bd8a85aee36e7a646f
 | [/api/get-token](#Token)                                 | N/A                            | Returns token for user                 | N/A                               | N/A                                         |
 | [/api/v1/public/](#Public)                                 | Returns informations about current state of bloods in all branches                           | N/A                   | N/A                               | N/A                                         |
 | [/api/v1/public/{branch}](#Public)                                 | Returns informations about current state of bloods in branch                           | N/A                   | N/A                               | N/A                                         |
-| [/api/v1/users/](#Users_list)                                 | Returns a list of users                           | N/A                   | N/A                               | N/A                                         |
-| [/api/v1/users/{id}](#User)                                 | Returns a user                           | N/A                   | N/A                               | N/A                                         |
+| [/api/v1/users/](#Users)                                 | Returns a list of users                           | N/A                   | N/A                               | N/A                                         |
+| [/api/v1/users/{id}](#Users)                                 | Returns a user                           | N/A                   | N/A                               | N/A                                         |
 | [/api/v1/patients/](#Patients_list)                                 | Returns a list of patients                           | Creates a new patient                  | N/A                               | N/A                                         |
 | [/api/v1/patients/{id}](#Patient)                                 | Returns the details of a single patient                           |  N/A                   | Updates a patient                               | Deletes a patient                                        |
 | [/api/v1/donations/](#Donations_list)                                 | Returns a list of donations                           | Creates a new donation                  | N/A                               | N/A                                         |
@@ -71,11 +71,6 @@ Returns list of avalible URIs.
 
 Returns token for user.
 
-
-
-
-
-
 ### Public
 
 #### Single example: 
@@ -114,36 +109,9 @@ Returns informations about current state of bloods in branch.
 
 
 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1production
+### Users
 
-
-
-### Users_list
-
-#### Single example: 
-
-```
-{
-            "id": 1,
-            "username": "ttpnzpgwut",
-            "first_name": "Wera",
-            "last_name": "Kucharska",
-            "email": "iyv@mail1st.com",
-            "position": "habilitated doctor",
-            "branch": "Lublin",
-            "image": "https://blood-donation-live.s3.eu-west-2.amazonaws.com/profile_image/ttpnzpgwut.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVGRKEV6O54SLRAVI%2F20200609%2Feu-west-2%2Fs3%2Faws4_request&X-Amz-Date=20200609T125155Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=e130336bd1547836ed8d32cbee931f5d3391805856db169639c9db2c05b91e82"
-        },
-        {
-            "id": 2,
-            "username": "atxl",
-            "first_name": "Blanca",
-            "last_name": "Chmielewska",
-            "email": "luwvdgyqsjb@coolsend.com",
-            "position": "medical specialist",
-            "branch": "Warszawa",
-            "image": "https://blood-donation-live.s3.eu-west-2.amazonaws.com/profile_image/atxl.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVGRKEV6O54SLRAVI%2F20200609%2Feu-west-2%2Fs3%2Faws4_request&X-Amz-Date=20200609T125155Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=ca9170745638071db207476990086b5a3f439a565c27fea1cb67282f13e65a0e"
-        },
-        ...
-```
 
 | URI                  | Method         |**GET**     |
 | -------------------- |  ------------- |  --------- |
@@ -151,19 +119,19 @@ Returns informations about current state of bloods in branch.
 
 > GET
 
-Returns list of users with branch, position and image.
+Returns list of users with branch and image.
 
-| Filter                | lookups           | Description |
-| --------------------- | ---------------- | ----------- |
-| **search**                | SearchFilter           | Search given value in: username, last_name, email, position, branch  |
-| **fields**      | Selective fields          | Returns only selected fields |
-| **omit**      | Selective fields          | Returns all fields except omitted ones |
-| **page**      | Pagination          | Returns page |
-| **page_size**      | Pagination          | Returns number of records on page (default=50, max_page_size=500 |
+| URI | Method   |**GET** |
+| --- |  ------- |  ------- |
+| `/api/v1/users/{id}`  | Permission |Users      |
 
-### User
+> GET
 
-#### Single example:
+Returns informations about user with branch and image.
+
+### Users
+
+#### Single example: 
 
 ```
 {
@@ -178,6 +146,25 @@ Returns list of users with branch, position and image.
 }
 ```
 
+#### Sortable Fields
+
+| Filter                | Type | lookups           | Description |
+| --------------------- | --|---------------- | ----------- |
+| **search**                | String| SearchFilter           | Search given value in: username, last_name, email, branch  |
+| **fields**      | String|Selective fields          | Returns only selected fields |
+| **omit**      | String|Selective fields          | Returns all fields except omitted ones |
+| **page**      |Integer |Pagination          | Returns page |
+| **page_size**      | Integer|Pagination          | Returns number of records on page (default=50, max_page_size=500 |
+
+
+| URI                  | Method         |**GET**     |
+| -------------------- |  ------------- |  --------- |
+| `/api/v1/users/`  | Permission     | Users      | 
+
+> GET
+
+Returns list of users with branch, position and image.
+
 | URI | Method   |**GET** |
 | --- |  ------- |  ------- |
 | `/api/v1/users/{id}`  | Permission |Users      |
@@ -185,6 +172,12 @@ Returns list of users with branch, position and image.
 > GET
 
 Returns informations about user.
+
+
+
+
+
+
 
 ### Patients_list
 
