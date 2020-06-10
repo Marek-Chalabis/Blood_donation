@@ -151,67 +151,7 @@ Returns list of users with branch, position and image.
 
 Returns informations about user.
 
-
-
-
-
-
-
-### Tools
-
-
-
-
-
-
- 
-
-| URI                  | Method         |**GET**     |**POST** |
-| -------------------- |  ------------- |  --------- |-------- |
-| `[/api/v1/tools/`  | Permission     | Users      | Users   |
-
-> GET
-
-Returns list of Tools
-
-> POST
-
-Adds new Tool 
-
-| URI                  | Method         |**GET** |**PUT**     |**DELETE** |
-| -------------------- |  ------------- |--------- |  --------- |-------- |
-| `/api/v1/tools/{id}`  | Permission     |Users      | Users      | Users   |
-
-> GET
-
-Return single Tool
-
-> PUT
-
-Updates Tool
-
-> DELETE
-
-Deletes Tool
-
-| URI                  | Method         |**GET**     |
-| -------------------- |  ------------- |  --------- |
-| `/api/v1/tools/{id}/detail/`  | Permission     | Users      |
-
-> GET
-
-Returns single Tool with extra data about project and producer
-
-
-
-
-
-
-
-
-
-
-### Patients   !!!!!!!!!!!!!!!POPRAWNY
+### Patients
 
 #### Single example: 
 
