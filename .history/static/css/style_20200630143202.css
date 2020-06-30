@@ -1,0 +1,76 @@
+body{
+    background-color: #FCF1F3;
+    font-family: Calibiri;
+}
+.left{
+    background-color: #CEB3B7;
+    border-radius: 5px;
+    margin-left: 0.5em;
+    padding: 0.3em;
+}
+.right{
+    background-color: #e1c9c9;
+    border-radius: 5px;
+    margin-right: 0.5em;
+    padding: 0.3em;
+}
+.content-section {
+  background: #ffffff;
+  padding: 10px 20px;
+  border: 2px solid #dddddd;
+  border-radius: 5px;
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+.account-img {
+  height: 125px;
+  width: 125px;
+  margin-right: 20px;
+  margin-bottom: 16px;
+}
+.account-heading {
+  font-size: 2.5rem;
+}
+
+.results{
+	overflow: auto;
+	max-height: 480px;
+}
+
+.table_sticky1 table {
+  border: 1px solid black;
+}
+.table_sticky1 th{
+  border: 1px solid black;
+}
+.table_sticky1 td {
+  border: 1px solid black;
+}
+.table_sticky1 table {
+  border-collapse: collapse;
+  position: relative;
+  text-align:center;
+  margin-left:auto;
+  margin-right:auto;
+}
+.table_sticky1 th {
+  height: 30px;
+  text-align: center;
+  background-color: #303030;
+  color: lightgray;
+  position: sticky;
+  top: 0;
+}
+.table_sticky1 td {
+  text-align: center;
+}
+.table_sticky1 tr{
+    background: lightgray
+}
+.table_sticky1 tr:nth-child(even){
+    background-color: #f2f2f2;
+}
+.table_sticky1 tr:hover {
+    background-color: #128870;
+    color: black;
+}

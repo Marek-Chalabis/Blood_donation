@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block left %}
+<div>
+    <p>
+      <button class="btn btn-info btn-lg btn-block" type="button" data-toggle="collapse" data-target="#search">
+        Search
+      </button>
+    </p>
+    <div class="collapse" id="search">
+      <div class="card card-body mb-2">
+          <form method="GET" class="container">
+                {{ filter.form|crispy }}
+            <button type="submit" class="btn btn-success btn-lg btn-block">Search</button>
+            <button type="reset" class="btn btn-danger btn-lg btn-block">Reset</button>
+            </form>
+      </div>
+    </div>
+	<div class="results table_sticky1">
+        <table align="center">
+            <tbody>
+            <tr onclick="window.location='#';">
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>PESEL</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Blood Type</th>
+                <th>Last donate</th>
+            </tr>
+            {% for patient in filter.qs %}
+            <tr onclick="window.location='{% url 'patient-detail' patient.id %}';" style="cursor:pointer;">
+                <td>{{ patient.first_name }}</td>
+                <td>{{ patient.last_name }}</td>
+                <td>{{ patient.pesel }}</td>
+                <td>{{ patient.email }}</td>
+                <td>{{ patient.formatted_phone_number }}</td>
+                <td>{{ patient.blood_group }}</td>
+                <td>
+                    {% if patient.last_correct_donation == None %}
+                        Never donated
+                    {% else %}
+                         {{ patient.last_correct_donation|date:"Y-m-d" }}
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+	</div>
+</div>
+{% endblock %}
+{% block right %}
+    <div class="p-2" >
+        <a style="text-decoration: none;" href="{% url 'patient-create' %}"><button type="button" class="btn-lg btn-block btn-primary">Register Donor</button></a>
+    </div>
+{% endblock %}
+
+
+
+
