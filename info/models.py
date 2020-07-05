@@ -1,14 +1,12 @@
 import datetime
 from datetime import date
 
-from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import F, Value
 from django.db.models.functions import Concat
 from django.urls import reverse
-from django.utils import timezone
 from phonenumber_field.modelfields import PhoneNumberField
 
 
@@ -66,7 +64,7 @@ class Patient(models.Model):
         if litres_of_blood == None:
             litres_of_blood = Patient.given_blood_litres(self)
 
-        if litres_of_blood < 5:
+        if litres_of_blood < 5 and litres_of_blood > 0:
             return "Beginner Donor"
         elif (self.gender == "male" and litres_of_blood >= 18) or (
             self.gender == "female" and litres_of_blood >= 15
@@ -97,7 +95,7 @@ class Patient(models.Model):
                 return f"No ({days_from_last_donate} days left)"
 
     def given_blood_litres(self):
-        return Donation.objects.filter(patient=self).count() * 0.45
+        return Donation.objects.filter(patient=self, accept_donate=True).count() * 0.45
 
     def medical_worker_responsible_for_register(self):
         full_repr_of_medical = Patient.objects.select_related(
@@ -112,7 +110,7 @@ class Patient(models.Model):
     def history_of_donation(self):
         # history of donations
         return (
-            Donation.objects.filter(patient_id=self.id)
+            Donation.objects.filter(patient=self)
             .select_related("medical_staff", "medical_staff__profile")
             .annotate(
                 medic_full_description=Concat(

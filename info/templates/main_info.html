@@ -8,90 +8,59 @@
             backgroundColor: "white",
             theme: "light2",
             animationEnabled: true,
-            title: {
+            title:{
                 text: "State of blood reserve"
             },
-            axisY: {
+            axisY:{
                 interval: 10,
                 maximum: 100,
                 suffix: "%",
             },
-            data: [{
+            data: [
+            {
                 type: "bar",
                 toolTipContent: "<b>{label}</b>: {y}%",
-                dataPoints: [{
-                        %
-                        for key,
-                        value in bloods.items %
-                    } {
-                        label: "{{ key }}",
-                        y: {
-                            {
-                                value
-                            }
+                dataPoints: [
+                {% for key, value in bloods.items %}
+                    { label: "{{ key }}",  y: {{ value }}, color:
+                        {% if value >= 70 %}
+                            "#01FF70"
+                        {% elif value < 70 and value >= 30 %}
+                            "#FF851B"
+                        {% elif value < 30 %}
+                            "#FF4136"
+                        {% endif %}
                         },
-                        color: {
-                            %
-                            if value >= 70 %
-                        }
-                        "#01FF70" {
-                            %
-                            elif value < 70 and value >= 30 %
-                        }
-                        "#FF851B" {
-                            %
-                            elif value < 30 %
-                        }
-                        "#FF4136" {
-                            %
-                            endif %
-                        }
-                    },
-                    {
-                        %
-                        endfor %
-                    }
+                {% endfor %}
                 ]
-            }]
+            }
+            ]
         });
 
-        var blood_percent = new CanvasJS.Chart("blood_percent", {
-            backgroundColor: "white",
-            theme: "light2",
-            animationEnabled: true,
-            title: {
-                text: "Blood share in banks"
-            },
-            data: [{
-                type: "pie",
-                startAngle: 25,
-                toolTipContent: "<b>{label}</b>: {y}%",
-                indexLabelFontSize: 16,
-                indexLabel: "{label} - {y}%",
-                dataPoints: [{
-                        %
-                        for key,
-                        value in blood_all.items %
-                    } {
-                        label: "{{ key }}",
-                        y: {
-                            {
-                                value
-                            }
-                        }
-                    },
-                    {
-                        %
-                        endfor %
-                    }
-                ]
-            }]
-        });
-        blood_percent.render();
-        chart_reserve.render();
+    var blood_percent = new CanvasJS.Chart("blood_percent", {
+        backgroundColor: "white",
+        theme: "light2",
+        animationEnabled: true,
+        title: {
+            text: "Blood share in banks"
+        },
+        data: [{
+            type: "pie",
+            startAngle: 25,
+            toolTipContent: "<b>{label}</b>: {y}%",
+            indexLabelFontSize: 16,
+            indexLabel: "{label} - {y}%",
+            dataPoints: [
+                {% for key, value in blood_all.items %}
+                    { label: "{{ key }}",  y: {{ value }} },
+                {% endfor %}
+            ]
+        }]
+    });
+    blood_percent.render();
+    chart_reserve.render();
     }
 </script>
-
 
 <h2 class="text-center" style="padding-top: 0.5em;">Information about <b>all</b> blood in banks</h2>
 <div class="container text-center" style="padding-top: 0.5em;">

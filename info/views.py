@@ -1,18 +1,18 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count, Max, Q
 from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
-from users.models import Profile
 
+from users.models import Profile
 from .filters import PatientFilter
 from .forms import DonationForm, InfoForDonor, PatientForm, UpdatePatientForm
 from .models import Donation, Patient
+
 
 # =========================== VIEWS FOR EVERYONE ============================
 
@@ -37,8 +37,8 @@ class BloodInformation:
         if branch is None:
             blood = set(
                 Donation.objects.select_related("patient", "medical_staff")
-                .values_list("patient__blood_group")
-                .annotate(
+                    .values_list("patient__blood_group")
+                    .annotate(
                     total=Count(
                         "id",
                         filter=Q(accept_donate=True, medical_staff__is_staff=False),
@@ -50,8 +50,8 @@ class BloodInformation:
                 Donation.objects.select_related(
                     "patient", "medical_staff", "medical_staff__profile"
                 )
-                .values_list("patient__blood_group")
-                .annotate(
+                    .values_list("patient__blood_group")
+                    .annotate(
                     total=Count(
                         "id",
                         filter=Q(
@@ -88,14 +88,21 @@ class BloodInformation:
         else:
             current_blood_donations = (
                 Donation.objects.select_related("medical_staff__profile")
-                .filter(accept_donate=True, medical_staff__profile__branch=branch)
-                .count()
+                    .filter(accept_donate=True, medical_staff__profile__branch=branch)
+                    .count()
             )
 
-        return {
-            blood_group: round((number_of_donations * 100) / current_blood_donations, 2)
-            for (blood_group, number_of_donations) in set_bloods
-        }
+        # checks if there was any donation yet
+        if current_blood_donations:
+            return {
+                blood_group: round((number_of_donations * 100) / current_blood_donations, 2)
+                for (blood_group, number_of_donations) in set_bloods
+            }
+        else:
+            return {
+                blood_group: 0
+                for (blood_group, number_of_donations) in set_bloods
+            }
 
     @staticmethod
     def blood_state(bloods):
@@ -126,12 +133,13 @@ def info_branch(request, branch):
     state_of_blood_supply = BloodInformation.blood_state(percentage_blood_share)
 
     available_cities = list(BloodInformation.branches)
-    available_cities.remove(branch)
+    if branch in available_cities:
+        available_cities.remove(branch)
 
     staff = (
         Profile.objects.select_related("user")
-        .filter(branch=branch, user__is_staff=False)
-        .all()
+            .filter(branch=branch, user__is_staff=False)
+            .all()
     )
 
     context = {
@@ -270,4 +278,3 @@ class PatientUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     form_class = UpdatePatientForm
     success_message = "Donor was updated successfully"
     template_name_suffix = "_update_form"
-

@@ -128,7 +128,6 @@ class PatientCustomFilter(django_filters.FilterSet):
     class Meta:
         model = Patient
         fields = {
-            "can_donate": ["exact"],
             "id": ["in"],
             "first_name": ["exact", "icontains"],
             "last_name": ["exact", "icontains"],
@@ -147,8 +146,7 @@ class PatientCustomFilter(django_filters.FilterSet):
                 "year",
                 "month",
                 "day",
-            ],
-            "search": ["full_search"],
+            ]
         }
 
     def full_search(self, queryset, name, value):
