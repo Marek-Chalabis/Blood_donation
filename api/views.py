@@ -4,7 +4,6 @@ from django.db import models
 from django.db.models import Count, Q
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-from info.models import Donation, Patient
 from rest_framework import filters, mixins, status, viewsets
 from rest_framework.authentication import (
     BasicAuthentication,
@@ -14,8 +13,9 @@ from rest_framework.authentication import (
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
-from users.models import Profile
 
+from info.models import Donation, Patient
+from users.models import Profile
 from .serializers import (
     DonationCustomFilter,
     DonationDetailSerializer,
@@ -24,8 +24,6 @@ from .serializers import (
     PatientSerializers,
     UserSerializer,
 )
-
-# ========PUBLIC=======
 
 
 @method_decorator(cache_page(60 * 60 * 24), name="dispatch")
@@ -51,14 +49,13 @@ class PublicInfoViewSet(viewsets.ViewSet):
 
         return Response(
             {
-                "Branches": self.branches,  # returns list of branches
-                "percentage_blood_share": percentage_blood_share,  # returns % part of blood group
+                "Branches": self.branches,
+                "percentage_blood_share": percentage_blood_share,
                 "state_of_blood_supply": state_of_blood_supply,
             }
-        )  # returns % state_of_blood_supply
+        )
 
     def retrieve(self, request, branch=None):
-        # try:
         branch = branch.capitalize()
         if branch in self.branches:
             blood = self.set_of_bloods(branch)
@@ -66,11 +63,11 @@ class PublicInfoViewSet(viewsets.ViewSet):
             state_of_blood_supply = self.blood_state(percentage_blood_share)
             return Response(
                 {
-                    "Branch": branch,  # returns list of branches
-                    "percentage_blood_share": percentage_blood_share,  # returns % part of blood group
+                    "Branch": branch,
+                    "percentage_blood_share": percentage_blood_share,
                     "state_of_blood_supply": state_of_blood_supply,
                 }
-            )  # returns % state_of_blood_supply
+            )
         else:
             return Response(
                 status=status.HTTP_404_NOT_FOUND,
@@ -86,8 +83,8 @@ class PublicInfoViewSet(viewsets.ViewSet):
         if branch is None:
             blood = set(
                 Donation.objects.select_related("patient", "medical_staff")
-                .values_list("patient__blood_group")
-                .annotate(
+                    .values_list("patient__blood_group")
+                    .annotate(
                     total=Count(
                         "id",
                         filter=Q(accept_donate=True, medical_staff__is_staff=False),
@@ -99,8 +96,8 @@ class PublicInfoViewSet(viewsets.ViewSet):
                 Donation.objects.select_related(
                     "patient", "medical_staff", "medical_staff__profile"
                 )
-                .values_list("patient__blood_group")
-                .annotate(
+                    .values_list("patient__blood_group")
+                    .annotate(
                     total=Count(
                         "id",
                         filter=Q(
@@ -112,12 +109,10 @@ class PublicInfoViewSet(viewsets.ViewSet):
                 )
             )
 
-        # checks if there is a blood that don't appear in blood groups
         if len(self.blood_groups) != len(blood):
-            # checks what type of blood is missing
+            # checks if there is a blood that don't appear in blood groups and add it to set
             current_list_of_bloods = {blood_type for (blood_type, _) in blood}
             missing_bloods = self.blood_groups.difference(current_list_of_bloods)
-            # adds it to base set
             for missing_blood in missing_bloods:
                 blood.add((missing_blood, 0))
 
@@ -126,7 +121,6 @@ class PublicInfoViewSet(viewsets.ViewSet):
     def percentage_of_blood_group(self, set_bloods, branch=None):
         """ return dictionary with % of blood group(blood_group: number)"""
 
-        # number of correct donations
         if branch is None:
             current_blood_donations = Donation.objects.filter(
                 accept_donate=True
@@ -134,8 +128,8 @@ class PublicInfoViewSet(viewsets.ViewSet):
         else:
             current_blood_donations = (
                 Donation.objects.select_related("medical_staff__profile")
-                .filter(accept_donate=True, medical_staff__profile__branch=branch)
-                .count()
+                    .filter(accept_donate=True, medical_staff__profile__branch=branch)
+                    .count()
             )
 
         return {
@@ -149,9 +143,6 @@ class PublicInfoViewSet(viewsets.ViewSet):
             key: (100 if value * 8 > 100 else value * 8)
             for (key, value) in bloods.items()
         }
-
-
-# ========USERS========
 
 
 class UserPagination(PageNumberPagination):
@@ -171,7 +162,7 @@ class UserViewSet(
         BasicAuthentication,
         TokenAuthentication,
     ]
-    filter_backends = [filters.SearchFilter]  # search=..
+    filter_backends = [filters.SearchFilter]
     search_fields = [
         "username",
         "last_name",
@@ -181,9 +172,6 @@ class UserViewSet(
     ]
     pagination_class = UserPagination
     permission_classes = [IsAuthenticated]
-
-
-# ========DONATIONS=======
 
 
 class DonationPagination(PageNumberPagination):
@@ -206,13 +194,11 @@ class DonationViewSet(viewsets.ModelViewSet):
     filterset_class = DonationCustomFilter
 
     def get_serializer_class(self):
-        # returns more details if retrieve one object
         if self.action == "retrieve":
             return DonationDetailSerializer
         return DonationSerializer
 
     def get_permissions(self):
-        # only Admin or staff members can delete patients
         if self.action == "destroy" or self.action == "update":
             permission_classes = [IsAdminUser]
         else:
@@ -222,14 +208,10 @@ class DonationViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = DonationSerializer(data=request.data)
         if serializer.is_valid():
-            # adds current user to Patient model
             serializer.save(medical_staff=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-# ========PATIENTS=======
 
 
 class PatientPagination(PageNumberPagination):
@@ -250,33 +232,30 @@ class PatientViewSet(viewsets.ModelViewSet):
     filterset_class = PatientCustomFilter
 
     def get_queryset(self):
-        # list of id patients  who donated under 90 days from today AND donation was accepted
         not_able_donation_id = (
             Donation.objects.select_related("patient")
-            .filter(
+                .filter(
                 Q(date_of_donation__gte=pendulum.now().subtract(days=90))
                 & Q(accept_donate=True)
             )
-            .values_list("patient__id", flat=True)
+                .values_list("patient__id", flat=True)
         )
 
-        # returns information if donor can donate
         queryset = (
             Patient.objects.select_related("registered_by", "registered_by__profile")
-            .prefetch_related("donation_set")
-            .annotate(
+                .prefetch_related("donation_set")
+                .annotate(
                 can_donate=models.Case(
                     models.When(id__in=not_able_donation_id, then=False),
                     default=models.Value(True),
                     output_field=models.BooleanField(),
                 )
             )
-            .order_by("id")
+                .order_by("id")
         )
         return queryset
 
     def get_permissions(self):
-        # only Admin or staff members can delete patients
         if self.action == "destroy":
             permission_classes = [IsAdminUser]
         else:
@@ -286,14 +265,12 @@ class PatientViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = PatientSerializers(data=request.data)
         if serializer.is_valid():
-            # adds current user to Patient model
             serializer.save(registered_by=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, *args, **kwargs):
-        # provides extend information about DB
         try:
             patient = self.get_object()
             patient.delete()
@@ -303,8 +280,7 @@ class PatientViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_423_LOCKED,
                 data={
                     "Information": "Patient in DB is Protected first "
-                    "you need to delete all donations with him/her",
+                                   "you need to delete all donations with him/her",
                     "detail": str(e),
                 },
             )
-

@@ -46,12 +46,11 @@ class Patient(models.Model):
         return f"{phone_number[:-9]} {phone_number[-9:-6]} {phone_number[-6:-3]} {phone_number[-3:]}"
 
     def last_correct_donation(self):
-        # last correct donation
         try:
             return (
                 Donation.objects.filter(patient=self, accept_donate=True)
-                .values_list("date_of_donation", flat=True)
-                .latest("date_of_donation")
+                    .values_list("date_of_donation", flat=True)
+                    .latest("date_of_donation")
             )
         except:
             return None
@@ -67,22 +66,21 @@ class Patient(models.Model):
         if litres_of_blood < 5 and litres_of_blood > 0:
             return "Beginner Donor"
         elif (self.gender == "male" and litres_of_blood >= 18) or (
-            self.gender == "female" and litres_of_blood >= 15
+                self.gender == "female" and litres_of_blood >= 15
         ):
             return "Distinguished Honorary Blood Donor of the 1st degree"
         elif (self.gender == "male" and 18 > litres_of_blood >= 12) or (
-            self.gender == "female" and 15 > litres_of_blood >= 10
+                self.gender == "female" and 15 > litres_of_blood >= 10
         ):
             return "Distinguished Honorary Blood Donor of the 2st degree"
         elif (self.gender == "male" and 12 > litres_of_blood >= 6) or (
-            self.gender == "female" and 10 > litres_of_blood >= 5
+                self.gender == "female" and 10 > litres_of_blood >= 5
         ):
             return "Distinguished Honorary Blood Donor of the 3st degree"
         else:
             return "Never donated"
 
     def can_donate(self):
-        # checks if donor can donate
         last_donate = Patient.last_correct_donation(self)
 
         if last_donate is None:
@@ -108,11 +106,10 @@ class Patient(models.Model):
         )
 
     def history_of_donation(self):
-        # history of donations
         return (
             Donation.objects.filter(patient=self)
-            .select_related("medical_staff", "medical_staff__profile")
-            .annotate(
+                .select_related("medical_staff", "medical_staff__profile")
+                .annotate(
                 medic_full_description=Concat(
                     F("medical_staff__profile__position"),
                     Value(" "),
@@ -121,7 +118,7 @@ class Patient(models.Model):
                     F("medical_staff__last_name"),
                 )
             )
-            .order_by("-date_of_donation")
+                .order_by("-date_of_donation")
         )
 
 

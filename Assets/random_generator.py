@@ -1,9 +1,10 @@
 """ module for universal dummy data"""
-import os
-import string
-import random
-import urllib.request
 import datetime
+import os
+import random
+import string
+import urllib.request
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
@@ -74,7 +75,6 @@ class Basic:
             start   -define start date  "d-m-Y"
             end     -define end date "d-m-Y" default=datetime.now()
         """
-        # start = datetime.datetime.strptime(str(start), '%Y-%m-%d')
         if type(start) is not datetime.datetime:
             start = datetime.datetime.strptime(str(start), "%Y-%m-%d")
         if end is None:
@@ -119,10 +119,10 @@ class Person:
         """
 
         password = (
-            random.choice(string.ascii_lowercase)
-            + random.choice(string.ascii_uppercase)
-            + random.choice(string.punctuation)
-            + random.choice(string.digits)
+                random.choice(string.ascii_lowercase)
+                + random.choice(string.ascii_uppercase)
+                + random.choice(string.punctuation)
+                + random.choice(string.digits)
         )
 
         while len(password) != password_length:
@@ -185,7 +185,7 @@ class Person:
             date        -date to PESEL default=Basic.random_date('1940-01-01')
             majority    -True to return majority person default=False
         """
-        if date == None:
+        if date is None:
             date = Basic.random_date("1940-01-01")
         year, month, day = date.split("-")
         if majority:
@@ -207,23 +207,23 @@ class Person:
         else:
             pesel_correct += str(day)
         pesel_correct += (
-            str(random.randint(0, 9))
-            + str(random.randint(0, 9))
-            + str(random.randint(0, 9))
+                str(random.randint(0, 9))
+                + str(random.randint(0, 9))
+                + str(random.randint(0, 9))
         )
         number_gender = [0, 2, 4, 6, 8] if gender == "F" else [1, 3, 5, 7, 9]
         pesel_correct += str(random.choice(number_gender))
         control_number = (
-            9 * int(pesel_correct[0])
-            + 7 * int(pesel_correct[1])
-            + 3 * int(pesel_correct[2])
-            + 1 * int(pesel_correct[3])
-            + 9 * int(pesel_correct[4])
-            + 7 * int(pesel_correct[5])
-            + 3 * int(pesel_correct[6])
-            + 1 * int(pesel_correct[7])
-            + 9 * int(pesel_correct[8])
-            + 7 * int(pesel_correct[9])
+                9 * int(pesel_correct[0])
+                + 7 * int(pesel_correct[1])
+                + 3 * int(pesel_correct[2])
+                + 1 * int(pesel_correct[3])
+                + 9 * int(pesel_correct[4])
+                + 7 * int(pesel_correct[5])
+                + 3 * int(pesel_correct[6])
+                + 1 * int(pesel_correct[7])
+                + 9 * int(pesel_correct[8])
+                + 7 * int(pesel_correct[9])
         )
         pesel_correct += str(control_number)[-1]
         return pesel_correct
@@ -5777,4 +5777,3 @@ FEMALE_LAST_NAME = [
     "Górecka",
     "Kaczmarczyk",
 ]
-

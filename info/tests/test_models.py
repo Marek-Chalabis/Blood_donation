@@ -18,57 +18,55 @@ class TestPatient:
 
     def test_last_correct_donation_accepted(self):
         patient = mixer.blend(Patient)
-        donation = mixer.blend(Donation, patient=patient, accept_donate=True)
+        mixer.blend(Donation, patient=patient, accept_donate=True)
         assert patient.last_correct_donation() == datetime.date.today()
 
     def test_last_correct_donation_not_accepted(self):
         patient = mixer.blend(Patient)
-        donation = mixer.blend(Donation, patient=patient, accept_donate=False)
+        mixer.blend(Donation, patient=patient, accept_donate=False)
         assert patient.last_correct_donation() == None
 
     def test_given_blood_litres_no_donations(self):
         patient = mixer.blend(Patient)
-        donation = mixer.blend(Donation, patient=patient, accept_donate=False)
+        mixer.blend(Donation, patient=patient, accept_donate=False)
         assert patient.given_blood_litres() == 0.0
 
     def test_given_blood_litres_given_donations(self):
         patient = mixer.blend(Patient)
         for _ in range(5):
-            donation = mixer.blend(Donation, patient=patient, accept_donate=True)
+            mixer.blend(Donation, patient=patient, accept_donate=True)
         assert patient.given_blood_litres() == 2.25
 
     def test_donor_status_no_given_litres_male(self):
         patient_never_donated = mixer.blend(Patient, gender='male')
-        # phone_number is given to make ewry patient unique
         patient_beginner = mixer.blend(Patient, phone_number=1, gender='male')
         for _ in range(5):
-            donation = mixer.blend(Donation, patient=patient_beginner, accept_donate=True)
+            mixer.blend(Donation, patient=patient_beginner, accept_donate=True)
         patient_1st_degree = mixer.blend(Patient, phone_number=2, gender='male')
         for _ in range(50):
-            donation = mixer.blend(Donation, patient=patient_1st_degree, accept_donate=True)
+            mixer.blend(Donation, patient=patient_1st_degree, accept_donate=True)
         patient_2st_degree = mixer.blend(Patient, phone_number=3, gender='male')
         for _ in range(30):
-            donation = mixer.blend(Donation, patient=patient_2st_degree, accept_donate=True)
+            mixer.blend(Donation, patient=patient_2st_degree, accept_donate=True)
         patient_3st_degree = mixer.blend(Patient, phone_number=4, gender='male')
         for _ in range(20):
-            donation = mixer.blend(Donation, patient=patient_3st_degree, accept_donate=True)
+            mixer.blend(Donation, patient=patient_3st_degree, accept_donate=True)
         assert patient_never_donated.donor_status() != patient_beginner.donor_status() != patient_1st_degree.donor_status() != patient_2st_degree.donor_status() != patient_3st_degree.donor_status()
 
     def test_donor_status_no_given_litres_female(self):
         patient_never_donated = mixer.blend(Patient, gender='female')
-        # phone_number is given to make ewry patient unique
         patient_beginner = mixer.blend(Patient, phone_number=1, gender='female')
         for _ in range(5):
-            donation = mixer.blend(Donation, patient=patient_beginner, accept_donate=True)
+            mixer.blend(Donation, patient=patient_beginner, accept_donate=True)
         patient_1st_degree = mixer.blend(Patient, phone_number=2, gender='female')
         for _ in range(50):
-            donation = mixer.blend(Donation, patient=patient_1st_degree, accept_donate=True)
+            mixer.blend(Donation, patient=patient_1st_degree, accept_donate=True)
         patient_2st_degree = mixer.blend(Patient, phone_number=3, gender='female')
         for _ in range(25):
-            donation = mixer.blend(Donation, patient=patient_2st_degree, accept_donate=True)
+            mixer.blend(Donation, patient=patient_2st_degree, accept_donate=True)
         patient_3st_degree = mixer.blend(Patient, phone_number=4, gender='female')
         for _ in range(15):
-            donation = mixer.blend(Donation, patient=patient_3st_degree, accept_donate=True)
+            mixer.blend(Donation, patient=patient_3st_degree, accept_donate=True)
         assert patient_never_donated.donor_status() != patient_beginner.donor_status() != patient_1st_degree.donor_status() != patient_2st_degree.donor_status() != patient_3st_degree.donor_status()
 
     def test_can_donate_never_donated(self):
@@ -77,12 +75,13 @@ class TestPatient:
 
     def test_can_donate_cant_donate(self):
         patient = mixer.blend(Patient)
-        donation = mixer.blend(Donation, patient=patient, accept_donate=True)
+        mixer.blend(Donation, patient=patient, accept_donate=True)
         assert patient.can_donate().startswith('No') is True
 
     def test_can_donate_can_donate(self):
         patient = mixer.blend(Patient)
-        donation = mixer.blend(Donation, patient=patient, accept_donate=True, date_of_donation=pendulum.now().subtract(days=91))
+        mixer.blend(Donation, patient=patient, accept_donate=True,
+                               date_of_donation=pendulum.now().subtract(days=91))
         assert patient.can_donate().startswith('Yes') is True
 
     def test_medical_worker_responsible_for_register(self):
@@ -93,5 +92,3 @@ class TestPatient:
     def test_history_of_donation(self):
         patient = mixer.blend(Patient)
         assert isinstance(patient.history_of_donation(), QuerySet)
-
-

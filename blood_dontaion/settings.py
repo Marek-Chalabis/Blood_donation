@@ -1,5 +1,9 @@
 import os
-from . import super_secret_informations
+
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -8,14 +12,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = super_secret_informations.SECRET_KEY
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1"] + super_secret_informations.ALLOWED_HOSTS
-
-# Application definition
+ALLOWED_HOSTS = ["127.0.0.1", env('ALLOWED_HOSTS')]
 
 INSTALLED_APPS = [
     "users.apps.UsersConfig",
@@ -68,7 +70,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "blood_dontaion.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -78,7 +79,6 @@ DATABASES = {
         "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -91,7 +91,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -106,16 +105,15 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = os.path.join(BASE_DIR, "users/media")
 MEDIA_URL = "/media/"
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "info/static/info")]
 
 # login/logout routine
 LOGIN_REDIRECT_URL = "main"
@@ -126,8 +124,8 @@ LOGIN_URL = "login"
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_USE_TLS = True
 EMAIL_HOST = "smtp.gmail.com"
-EMAIL_HOST_USER = super_secret_informations.EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = super_secret_informations.EMAIL_HOST_PASSWORD
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 
 # caches
@@ -147,7 +145,6 @@ REST_FRAMEWORK = {
     "DEFAULT_THROTTLE_RATES": {"anon": "200/day", "user": "200/hour"},
 }
 
-
 # ADDS FOR APPS
 # bootstrap - updated visuals
 CRISPY_TEMPLATE_PACK = "bootstrap4"
@@ -156,12 +153,11 @@ INTERNAL_IPS = ["127.0.0.1"]
 # True to unable toolbar
 DEBUG_TOOLBAR_CONFIG = {"SHOW_TOOLBAR_CALLBACK": lambda r: True}  # disables it
 
-
 # # AMAZON S3 (keep static files there uncomment if you want)
 # # COMMENT SAVE METHOD IN USERS -> MODELS PROFILE -> SAVE()
-# AWS_ACCESS_KEY_ID = super_secret_informations.AWS_ACCESS_KEY_ID
-# AWS_SECRET_ACCESS_KEY = super_secret_informations.AWS_SECRET_ACCESS_KEY
-# AWS_STORAGE_BUCKET_NAME = super_secret_informations.AWS_STORAGE_BUCKET_NAME
+# AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+# AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+# AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
 #
 # # boto and django-storages settings
 # INSTALLED_APPS += ['storages']

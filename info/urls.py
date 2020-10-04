@@ -1,6 +1,4 @@
-from django.contrib import admin
-from django.urls import include, path
-from django.views.decorators.cache import cache_page
+from django.urls import path
 
 from .views import (PatientCreateView, PatientDetailView, PatientListView,
                     PatientUpdateView, blood_donation, donate, info_branch,

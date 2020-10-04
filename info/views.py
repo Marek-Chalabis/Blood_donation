@@ -14,9 +14,6 @@ from .forms import DonationForm, InfoForDonor, PatientForm, UpdatePatientForm
 from .models import Donation, Patient
 
 
-# =========================== VIEWS FOR EVERYONE ============================
-
-
 class BloodInformation:
     blood_groups = {
         "0 Rh+",
@@ -63,14 +60,11 @@ class BloodInformation:
                 )
             )
 
-        # checks if there is a blood that don't appear in blood groups
         if len(BloodInformation.blood_groups) != len(blood):
-            # checks what type of blood is missing
             current_list_of_bloods = {blood_type for (blood_type, _) in blood}
             missing_bloods = BloodInformation.blood_groups.difference(
                 current_list_of_bloods
             )
-            # adds it to base set
             for missing_blood in missing_bloods:
                 blood.add((missing_blood, 0))
 
@@ -80,7 +74,6 @@ class BloodInformation:
     def percentage_of_blood_group(set_bloods, branch=None):
         """ return dictionary with % of blood group(blood_group: number)"""
 
-        # number of correct donations
         if branch is None:
             current_blood_donations = Donation.objects.filter(
                 accept_donate=True
@@ -92,7 +85,6 @@ class BloodInformation:
                     .count()
             )
 
-        # checks if there was any donation yet
         if current_blood_donations:
             return {
                 blood_group: round((number_of_donations * 100) / current_blood_donations, 2)
@@ -159,12 +151,10 @@ def info_donor(request):
         if form.is_valid():
             pesel = form.cleaned_data["pesel"]
             donor_check = Patient.objects.filter(pesel=pesel)
-            # checks if donor was in db
             if donor_check.exists():
                 donor = donor_check[0]
                 last_name = form.cleaned_data["last_name"]
                 first_name = form.cleaned_data["first_name"]
-                # checks if data is correct
                 if first_name != donor.first_name:
                     messages.warning(
                         request, f"Fist name({first_name}) is not valid for-{pesel}"
@@ -189,15 +179,11 @@ def info_donor(request):
     return render(request, "donor_info.html", context)
 
 
-# ======================== REQUIRE LOGIN ==========================
-
-
 @login_required
 def donate(request):
     if request.method == "POST":
         pesel = request.POST.get("pesel")
         donor = Patient.objects.filter(pesel=pesel)
-        # checks if donor was in db
         if donor.exists():
             return redirect("blood-donation", donor_id=donor[0].id)
         else:
@@ -226,7 +212,6 @@ def blood_donation(request, donor_id):
 @method_decorator(login_required, name="dispatch")
 @method_decorator(cache_page(60 * 60), name="dispatch")
 class PatientListView(ListView):
-    # adds dates of last correct donation
     queryset = Patient.objects.annotate(
         last_correct_donation=Max(
             "donation__date_of_donation", filter=Q(donation__accept_donate=True)

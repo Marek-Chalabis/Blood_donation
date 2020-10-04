@@ -1,6 +1,6 @@
 # Blood_donation(https://blood-dontaion.herokuapp.com/)
-
-> Web App for managing the blood donor database. + REST API (project maybe be offline due to free tier usage limits on AWS, if you want to see it LIVE let me know)
+!!!TESTY
+> Web App for managing the blood donor database + REST API (project maybe be offline due to free tier usage limits on AWS, if you want to see it LIVE let me know)
 
 
 
@@ -21,7 +21,7 @@ register donors, update them, see their detailed information and blood donation 
 People who are not logged in can check whether they can donate blood and information about the state of blood banks.
 The project has a program for creating a logical, unique database.
 
-<b>REST API</b> documentation -> [API-guide.md](API-guide.md)
+<b>REST API</b> documentation: [API-guide.md](api/API-guide.md)
 
 ## Login details
 
@@ -39,11 +39,11 @@ All registered donors can be found on admin page( Info › Patients)(https://blo
 
 ## Screenshots
 
-![list_donor](./img/list_donor.PNG)
-![branch](./img/branch.PNG)
-![donor_info](./img/donor_info.PNG)
-![filtry](./img/filtry.PNG)
-![info_donor](./img/info_donor.PNG)
+![list_donor](Assets/img/list_donor.PNG)
+![branch](Assets/img/branch.PNG)
+![donor_info](Assets/img/donor_info.PNG)
+![filtry](Assets/img/filtry.PNG)
+![info_donor](Assets/img/info_donor.PNG)
 
 ## Technologies
 
@@ -57,8 +57,13 @@ All registered donors can be found on admin page( Info › Patients)(https://blo
 
 ## Setup
 
-1. Install Python(+modules) and Django
-2. Run program "fill_DB_blood_donation.py" and follow instructions there to run project and create your own unique DB
+1. Install Python and pipenv 
+2. Run this commends in the project folder
+```
+    pipenv install -r requirements.txt
+    pipenv shell
+```
+2. Run program [fill_db_blood_donation.py](Assets/fill_db_blood_donation.py) (in Assets folder) and follow instructions there to run project and create your own unique DB
 
 ## Features
 

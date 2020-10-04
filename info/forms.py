@@ -1,6 +1,4 @@
-import localflavor
 from django import forms
-from django.db import models
 from django.forms import ModelForm
 from localflavor.pl.forms import PLPESELField
 

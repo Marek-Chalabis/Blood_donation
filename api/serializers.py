@@ -2,12 +2,11 @@ import django_filters
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db.models import Q
-from info.models import Donation, Patient
 from localflavor.pl.forms import PLPESELField
 from rest_flex_fields import FlexFieldsModelSerializer
 from rest_framework import serializers
 
-# ========USERS========
+from info.models import Donation, Patient
 
 
 class UserSerializer(FlexFieldsModelSerializer):
@@ -29,12 +28,9 @@ class UserSerializer(FlexFieldsModelSerializer):
         ]
 
 
-# ========DONATIONS========
-
-
 class DonationCustomFilter(django_filters.FilterSet):
-    patient = django_filters.BaseInFilter(method="search_in")
-    medical_staff = django_filters.BaseInFilter(method="search_in")
+    patient = django_filters.BaseInFilter(method="search_in_patient")
+    medical_staff = django_filters.BaseInFilter(method="search_in_medical_staff")
 
     class Meta:
         model = Donation
@@ -55,11 +51,11 @@ class DonationCustomFilter(django_filters.FilterSet):
             "refuse_information": ["icontains"],
         }
 
-    def search_in(self, queryset, name, value):
-        if name == "medical_staff":
-            return queryset.filter(medical_staff_id__in=value)
-        elif name == "patient":
-            return queryset.filter(patient_id__in=value)
+    def search_in_medical_staff(self, queryset, name, value):
+        return queryset.filter(medical_staff_id__in=value)
+
+    def search_in_patient(self, queryset, name, value):
+        return queryset.filter(patient_id__in=value)
 
 
 class DonationSerializer(FlexFieldsModelSerializer):
@@ -117,13 +113,10 @@ class DonationDetailSerializer(FlexFieldsModelSerializer):
         ]
 
 
-# ========PATIENTS========
-
-
 class PatientCustomFilter(django_filters.FilterSet):
     can_donate = django_filters.BooleanFilter(field_name="can_donate")
     search = django_filters.CharFilter(method="full_search")
-    registered_by = django_filters.BaseInFilter(method="search_in")
+    registered_by = django_filters.BaseInFilter(method="search_in_registered_by")
 
     class Meta:
         model = Patient
@@ -159,7 +152,7 @@ class PatientCustomFilter(django_filters.FilterSet):
             | Q(phone_number__icontains=value)
         )
 
-    def search_in(self, queryset, name, value):
+    def search_in_registered_by(self, queryset, name, value):
         return queryset.filter(registered_by_id__in=value)
 
 
@@ -183,20 +176,20 @@ class PatientSerializers(FlexFieldsModelSerializer):
     class Meta:
         model = Patient
         fields = (
-            [
-                "id",
-                "first_name",
-                "last_name",
-                "pesel",
-                "blood_group",
-                "gender",
-                "email",
-                "phone_number",
-                "date_of_register",
-                "registered_by",
-            ]
-            + ["can_donate"]
-            + ["donation_set"]
+                [
+                    "id",
+                    "first_name",
+                    "last_name",
+                    "pesel",
+                    "blood_group",
+                    "gender",
+                    "email",
+                    "phone_number",
+                    "date_of_register",
+                    "registered_by",
+                ]
+                + ["can_donate"]
+                + ["donation_set"]
         )
         read_only_fields = ["date_of_register"]
 
