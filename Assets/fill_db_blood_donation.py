@@ -7,7 +7,7 @@ import json
 import os
 import random
 
-from Assets import random_generator
+import random_generator
 
 # Fill to get json_file adequate to your needs
 NUMBER_OF_USERS = 70
