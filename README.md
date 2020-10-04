@@ -1,5 +1,5 @@
 # Blood_donation(https://blood-dontaion.herokuapp.com/)
-!!!TESTY
+
 > Web App for managing the blood donor database + REST API (project maybe be offline due to free tier usage limits on AWS, if you want to see it LIVE let me know)
 
 
