@@ -63,7 +63,7 @@ All registered donors can be found on admin page( Info › Patients)(https://blo
 ```
     pip install -r requirements.txt
 ```
-2. Run program [fill_db_blood_donation.py](Assets/fill_db_blood_donation.py) (in Assets folder) and follow instructions there to run project and create your own unique DB
+3. Run program [fill_db_blood_donation.py](Assets/fill_db_blood_donation.py) (in Assets folder) and follow instructions there to run project and create your own unique DB
 
 ## Tests
 1. Run
