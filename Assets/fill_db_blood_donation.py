@@ -220,7 +220,6 @@ def donation_json(path_folder):
         json.dump(json_info, json_file)
 
 
-input("Check numbers at the top of the file" "\nPress any key to continue . . .")
 print("It will take few seconds depends on amount of generated data...")
 path = folder_for_data()
 users_json(path)
@@ -239,19 +238,11 @@ while True:
         Donation.list_of_patients.clear()
 
 print(
-    "Follow the instructions below"
-    "\n===Open terminal in root directory and write this commends:==="
-    "\n\npython manage.py makemigrations"
-    "\n\npython manage.py migrate"
-    "\n\npython manage.py shell"
-    "\n\nimport json;from users.models import *;from info.models import *;from django.contrib.auth.models import User;from django.core.files import File;import random;users_list=[];patient_list=[];"
-    f'\n\nwith open("{os.path.join(folder_for_data(), "users.json")}") as file_users, open("{os.path.join(folder_for_data(), "profile.json")}") as file_profile, open("{os.path.join(folder_for_data(), "patient.json")}") as file_patient, open("{os.path.join(folder_for_data(), "donation.json")}") as file_donation:    users_json=json.load(file_users);    profile_json=json.load(file_profile);    patient_json=json.load(file_patient);    donation_json=json.load(file_donation);'
-    '\n\nfor user, profile_user in zip(users_json, profile_json):     new_user = User(username=user["username"], email=user["email"], password=user["password"], first_name=user["first_name"], last_name=user["last_name"]);     new_user.save();     new_user.profile.position=profile_user["position"];     new_user.save();     new_user.profile.branch=profile_user["branch"];     new_user.save();      new_user.profile.image.save(f"{new_user.username}.jpg", File(open(profile_user["image"], "rb")));     users_list.append(new_user);'
-    '\n\nfor patient in patient_json:     new_patient = Patient(first_name=patient["first_name"], last_name=patient["last_name"], gender=patient["gender"], email=patient["email"], pesel=patient["pesel"], blood_group=patient["blood_group"], phone_number=patient["phone_number"], date_of_register=patient["date_of_register"], registered_by=random.choice(users_list));     new_patient.save();'
-    '\n\nfor donate in donation_json:     correct_patient = Patient.objects.get(pesel=donate["patient_pesel"]);    new_donation = Donation(medical_staff=random.choice(users_list), patient=correct_patient, accept_donate=donate["accept_donate"], refuse_information=donate["refuse_information"], date_of_donation=donate["date_of_donation"]);     new_donation.save();'
-    "\n\nexit()"
-    "\n\npython manage.py createsuperuser"
-    "\n\npython manage.py createcachetable"
-    "\n\npython manage.py runserver"
+    "\n===Open terminal in root directory and write this commands==="
+    "\n\npython manage.py makemigrations && "
+    "python manage.py migrate && "
+    f"python manage.py populate_db {folder_for_data()} -a && "
+    "python manage.py createcachetable && "
+    "python manage.py runserver"
     "\n\n===LOOK TO THE TOP==="
 )
