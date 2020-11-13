@@ -38,9 +38,11 @@ class Basic:
             theme   -theme of pics default "cats"
             number_of_pics  -number of pics to download default=1
         """
-        options = Options()
-        options.headless = True
-        browser = webdriver.Chrome(options=options)
+        chrome_options = Options()
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        browser = webdriver.Chrome(options=chrome_options)
         browser.get("https://all-free-download.com/")
         browser.find_element_by_id("q_photos").send_keys(theme)
         browser.find_element_by_xpath(
