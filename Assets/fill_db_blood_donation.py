@@ -244,5 +244,4 @@ print(
     f"python manage.py populate_db {folder_for_data()} -a && "
     "python manage.py createcachetable && "
     "python manage.py runserver"
-    "\n\n===LOOK TO THE TOP==="
 )

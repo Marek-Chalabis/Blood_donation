@@ -12,6 +12,7 @@
 - [Technologies](#technologies)
 - [Setup](#setup)
 - [Tests](#tests)
+- [Docker](#Docker)
 - [Features](#features)
 - [Contact](#contact)
 
@@ -69,6 +70,30 @@ All registered donors can be found on admin page( Info › Patients)(https://blo
 1. Run
 ```
     pytest
+```
+## Docker
+
+> [Docker image](Dockerfile) that configures selenium-chromedriver and creates project:
+> - runs makemigrations, migrate, createcachetable
+> - runs tests to ensure project image will work
+> - creates DB and populate it with random data
+> - adds superuser - login: admin password:admin
+
+##### Build image
+```
+    docker build -t blood_donation .
+```
+##### Run container
+```
+    docker run -d --name blood_donation_project -p 8000:8000 blood_donation
+```
+##### Run tests in container
+```
+    docker exec -it blood_donation_project  pytest
+```
+##### Show generated users information
+```
+    docker exec -it blood_donation_project python -m json.tool dummy_data/users.json
 ```
 ## Features
 
